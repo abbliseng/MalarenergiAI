@@ -1,0 +1,13 @@
+SMHI - Saga och Linus
+- Hittat datamängd att ladda ner
+
+Läsa in och formatera data - Carl
+- Läst in och formaterat 24 kommande timmarna av datamängden som hittats
+
+Användar gränssnitt - Ida
+- Visat förhäxad data i graf-format
+
+Undersöker olika modeller - Lisa och Mathias
+- Kollat Multiple Regression
+- Installerat PyTorch
+- Saker
