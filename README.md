@@ -8,3 +8,8 @@ En AI modell som kan förutspå förbrukningen i ett husområde utifrån tempera
 4.  Lista ut AI delen
 5.  Utvärderade sannolikheten
 6.  Presentera svar, grafiskt.
+## Uppgifter
+SMHI - Saga och Linus  
+Läsa in och formatera data - Carl  
+Användar gränssnitt - Ida  
+Undersöker olika modeller - Lisa och Mathias
