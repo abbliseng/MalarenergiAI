@@ -1,0 +1,10 @@
+- Vilken sorts data och hur får vi tillgång?
+förbrukningsdata på timnivå och temperatur, får skickat på måndag till Lisas skolmejl
+
+- Område?
+de väljer
+
+- Hur vill de ha datan presenterad?
+visa resultat, hur säker algoritm, samband, prognos-verktyg för att kunna uppskatta hur mycket energi som ska förbrukas
+mata in dygn med temp och få förslag
+hur träffsäker, hur vi byggde modellen
