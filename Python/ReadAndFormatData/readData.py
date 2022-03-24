@@ -6,7 +6,7 @@ writeFileName = "Data_Hallsta_torktumlad.csv"
 with open(fileName, mode='r') as file:
     csvFile = csv.reader(file)
  
-    for lines in csvFile:
-        print(lines)
-    
-
+    with open(writeFileName, 'w') as csvfile: 
+        csvwriter = csv.writer(csvfile) 
+        for lines in csvFile:
+            csvwriter.writerow(lines) 
