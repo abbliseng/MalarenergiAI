@@ -1,7 +1,7 @@
 import csv
 
-fileName = "C:\Development\AI\MalarenergiAI\Python\Data\Data_Hallsta_tvättad.csv"
-writeFileName = "C:\Development\AI\MalarenergiAI\Python\Data\Data_Hallsta_torktumlad.csv"
+fileName = "C:\Code\Python\MalarenergiAI\Python\Data\Data_Sura_tvättad.csv"
+writeFileName = "C:\Code\Python\MalarenergiAI\Python\Data\Data_Sura_torktumlad.csv"
 
 rawData = csv.reader(open(fileName), delimiter=';')
 
