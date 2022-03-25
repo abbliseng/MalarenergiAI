@@ -1,0 +1,9 @@
+Lisa - Misslyckades, kom in på pytorch och satte upp ett projekt i google colab, undersökte hur predictions med två inputs ska se ut
+
+Saga - satt med Lisa och läste in på pytorch
+
+Ida - Mindre cursed graf, minus y-axeln
+
+Carl och Linus - Tvättade och rensade datan vi fick in
+
+Mathias - Räknade på datum
