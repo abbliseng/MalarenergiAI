@@ -10,7 +10,6 @@ for row in rawData:
     if not row[1] == '':
         newFile.writerow(row)
 
-
 # import csv
 
 # fileName = "C:\Development\AI\MalarenergiAI\Python\Data\Data_Hallsta_tvättad.csv"
