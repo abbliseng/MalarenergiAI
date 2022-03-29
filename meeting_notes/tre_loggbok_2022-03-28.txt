@@ -1,0 +1,11 @@
+Lisa - "Misslyckades" igen, testade ny modell, kan visa datan i tabell. Fixade två inputs, träna, loss-funktion och predictions som denna gång valde att dö.
+
+Saga - Undersöker loss-funktioner för arbetet
+
+Ida - Jobbade med grafisk redovisning och är i Oslo
+
+Carl - Undersöker torch.nn och vad som finns
+
+Linus - Undersöker fler modeller
+
+Mathias - Omformaterar datan efter vad modellen nu kräver så data inte får samma nycklar

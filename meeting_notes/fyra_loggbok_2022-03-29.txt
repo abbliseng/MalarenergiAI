@@ -1,0 +1,11 @@
+Lisa - Instruerade resten av gruppen och fördelade arbete
+
+Saga - Testade loss-funktioner, BCELoss, MSELoss och CTCLoss
+
+Ida - Oslo
+
+Carl - Undersökte torch.nn
+
+Linus - Testade ny modell, funkade ej
+
+Mathias - Omformaterade data, raderade projektet
