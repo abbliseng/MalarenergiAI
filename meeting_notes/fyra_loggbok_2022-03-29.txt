@@ -1,6 +1,6 @@
 Lisa - Instruerade resten av gruppen och fördelade arbete
 
-Saga - Testade loss-funktioner, BCELoss, MSELoss och CTCLoss
+Saga - Testade loss-funktioner, L1Loss, BCELoss, MSELoss och CTCLoss
 
 Ida - Oslo
 
