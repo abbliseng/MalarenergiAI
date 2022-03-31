@@ -90,10 +90,11 @@ for row in rawData:
 
 for i in averageList:
     date, hourList, averageValue = i.split(' ')
-    part1, line, monthDay = date.partition('-')
+    yearList, line, monthDay = date.partition('-')
     monthList, line2, dayList = monthDay.partition('-')
     # print(monthList, dayList, hourList,averageValue)
     # newFile.writerow(int(monthList) , int(dayList) , int(hourList), float(averageValue))
+    finalList.append(int(yearList))
     finalList.append(int(monthList))
     finalList.append(int(dayList))
     finalList.append(int(hourList))
