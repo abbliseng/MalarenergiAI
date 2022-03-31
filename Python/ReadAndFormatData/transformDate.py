@@ -1,11 +1,10 @@
 import csv
+from unicodedata import decimal
 
-fileName = "C:\Development\AI\MalarenergiAI\Python\Data\Data_Hallsta_torktumlad.csv"
-writeFileName = "C:\Development\AI\MalarenergiAI\Python\Data\Data_Hallsta_manglad.csv"
+from numpy import average
 
-# with open(fileName, mode='r') as file:
-#     csvFile = csv.reader(file)
-#     columns = list(csvFile)
+fileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data\Data_Hallsta_torktumlad.csv"
+writeFileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data\Data_Hallsta_test.csv"
 
 
 def calculate_hour(hour, day, month, year):
@@ -47,9 +46,14 @@ def calculate_hour(hour, day, month, year):
 rawData = csv.reader(open(fileName), delimiter=';')
 newFile = csv.writer(open(writeFileName, "w", newline=''), delimiter=';')
 
-for row in rawData:
+sameValue = []
+compareDate = ""
+average = 0
+averageList = []
+finalList = []
 
-    # for i in range(0, len(columns)):
+for row in rawData:
+  
     head, sep, tail = row[0].partition(' ')
 
     # delar upp år, månad och dag
@@ -57,85 +61,107 @@ for row in rawData:
     month, middle2, day = dayMonth.partition('-')
 
     # delar upp timme och minut
-    hour, middle3, minSec = tail.partition(':')
+    hour, middle3, min = tail.partition(':')
+
+    # date, tV, tH, Ft, Fl, Rt, Effect = row[0].split(';')
+
+    date2, middle4, rest = row[0].partition(':')
 
     totalHour = calculate_hour(hour, day, month, year)
-    row.append(totalHour)
-    newFile.writerow(row)
+    
 
-# for i in range(0, len(columns)):
-#     #delar upp basdatat
-#     head, sep, tail = columns[i][0].partition(' ')
+    if len(sameValue) == 0 or compareDate == date2:
+        row[-1] = row[-1].replace(",", ".")
+        sameValue.append(float(row[-1]))
+        compareDate = date2
+    else:
+        for value in sameValue:
+            average += value
+        average = average/len(sameValue)
+        averageList.append(compareDate + ' ' + str(average))
+        compareDate = " "
+        sameValue = []
+        row[-1] = row[-1].replace(",", ".")
+        sameValue.append(float(row[-1]))
+        compareDate = date2
+    
+   
 
-#     #delar upp år, månad och dag
-#     year, middle, dayMonth = head.partition('-')
-#     month, middle2, day = dayMonth.partition('-')
 
-#     #delar upp timme och minut
-#     hour, middle3, minSec = tail.partition(':')
+for i in averageList:
+    date, hourList, averageValue = i.split(' ')
+    part1, line, monthDay = date.partition('-')
+    monthList, line2, dayList = monthDay.partition('-')
+    # print(monthList, dayList, hourList,averageValue)
+    # newFile.writerow(int(monthList) , int(dayList) , int(hourList), float(averageValue))
+    finalList.append(int(monthList))
+    finalList.append(int(dayList))
+    finalList.append(int(hourList))
+    finalList.append(float(averageValue))
+    newFile.writerow(finalList)
+    finalList = []
 
-    #print(calculate_hour (hour,day,month,year))
 
 months = {
     "31": [1, 3, 5, 7, 8, 10, 12],
     "30": [4, 6, 9, 11]
 }
 
-try:
-    while True:
-        Y = int(input("Year: "))
-        if Y >= 2016:
-            break
-        else:
-            print("Enter a year equal to or greater than 2016.")
-            continue
+# try:
+#     while True:
+#         Y = int(input("Year: "))
+#         if Y >= 2016:
+#             break
+#         else:
+#             print("Enter a year equal to or greater than 2016.")
+#             continue
 
-    while True:
-        M = int(input("Month: "))
-        if M > 12 or M <= 0:
-            print("Enter a valid month from 1 to 12")
-            continue
-        else:
-            break
+#     while True:
+#         M = int(input("Month: "))
+#         if M > 12 or M <= 0:
+#             print("Enter a valid month from 1 to 12")
+#             continue
+#         else:
+#             break
 
-    while True:
-        D = int(input("Day: "))
+#     while True:
+#         D = int(input("Day: "))
 
-        if D <= 0:
-            print("A day's number can't be zero or less")
-            continue
-        if M in months["31"] and D > 31:
-            print("Enter a number smaller than 31")
-            continue
-        if M in months["30"] and D > 30:
-            print("Enter a number smaller than 30")
-            continue
-        if M == 2:
-            if int(Y % 4) == 0 and D > 29:
-                print("Enter a number smaller than 29")
-                continue
-            elif int(Y % 4) != 0 and D > 28:
-                print("Enter a number smaller than 28")
-                continue
-            break
-        else:
-            break
+#         if D <= 0:
+#             print("A day's number can't be zero or less")
+#             continue
+#         if M in months["31"] and D > 31:
+#             print("Enter a number smaller than 31")
+#             continue
+#         if M in months["30"] and D > 30:
+#             print("Enter a number smaller than 30")
+#             continue
+#         if M == 2:
+#             if int(Y % 4) == 0 and D > 29:
+#                 print("Enter a number smaller than 29")
+#                 continue
+#             elif int(Y % 4) != 0 and D > 28:
+#                 print("Enter a number smaller than 28")
+#                 continue
+#             break
+#         else:
+#             break
 
-    while True:
-        H = int(input("Hour: "))
-        if H < 0 or H > 23:
-            print("Enter a value between 0 and 23.")
-            continue
-        else:
-            break
-except ValueError:
-    print("Only numbers can be entered.")
+#     while True:
+#         H = int(input("Hour: "))
+#         if H < 0 or H > 23:
+#             print("Enter a value between 0 and 23.")
+#             continue
+#         else:
+#             break
+# except ValueError:
+#     print("Only numbers can be entered.")
 
 
-print("Year: " + str(Y), "Month: " + str(M),
-      "Day: " + str(D), "Hour: " + str(H))
+# print("Year: " + str(Y), "Month: " + str(M),
+#       "Day: " + str(D), "Hour: " + str(H))
 
-print("Hour of the year: ", calculate_hour(H, D, M, Y))
+# print("Hour of the year: ", calculate_hour(H, D, M, Y))
 
 
 #    print("Enter a valid integer of an existing date. Exampel: Year=2022, Month=03, Day=20, Hour=13. The hours are a inteval from 0 to 23")
