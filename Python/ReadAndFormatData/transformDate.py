@@ -3,8 +3,19 @@ from unicodedata import decimal
 
 from numpy import average
 
-fileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data\Data_Hallsta_torktumlad.csv"
-writeFileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data\Data_Hallsta_test.csv"
+fileName = "C:\Code\Python\MalarenergiAI\Python\Data\Data_Hallsta_torktumlad.csv"
+writeFileName = "C:\Code\Python\MalarenergiAI\Python\Data\Data_Hallsta_test.csv"
+
+windFileName = "C:\Code\Python\MalarenergiAI\Python\Data/vind_hastighet.csv"
+windFileData = csv.reader(open(windFileName), delimiter=';')
+windlist = []
+
+windDatelist = []
+windHourList = []
+for row in windFileData:
+    windHourList.append(row[1])
+    windDatelist.append(row[0])
+    windlist.append(row[-2])
 
 
 def calculate_hour(hour, day, month, year):
@@ -85,8 +96,15 @@ for row in rawData:
         sameValue.append(float(row[-1]))
         compareDate = date2
     
-   
+realWindHourList = []
+for i in range(0, len(windDatelist)):
+    hour, a1, a2 = windHourList[i].partition(':')
+    realWindHourList.append(hour)
+    # print(windDatelist[i] + ":" + realWindHourList[i] + ";" + windlist[i])
 
+
+# for i in averageList:
+#     print(i)
 
 for i in averageList:
     date, hourList, averageValue = i.split(' ')
@@ -94,14 +112,27 @@ for i in averageList:
     monthList, line2, dayList = monthDay.partition('-')
     # print(monthList, dayList, hourList,averageValue)
     # newFile.writerow(int(monthList) , int(dayList) , int(hourList), float(averageValue))
-    finalList.append(int(yearList))
-    finalList.append(int(monthList))
-    finalList.append(int(dayList))
-    finalList.append(int(hourList))
-    finalList.append(float(averageValue))
-    newFile.writerow(finalList)
-    finalList = []
+    for ii in range(0, len(windDatelist)):
+        # print("Ha")
+        if(windDatelist[ii] == date):
+            # print("HaHa")
+            if(realWindHourList[ii] == hourList):
+                # print("HaHaHa")
+                
+                finalList.append(int(yearList))
+                finalList.append(int(monthList))
+                finalList.append(int(dayList))
+                finalList.append(int(hourList))
+                finalList.append(float(averageValue))
+                finalList.append(float(windlist[ii]))
+                newFile.writerow(finalList)
+                finalList = []
 
+# for i in range(0, len(windDatelist)):
+#     windHour, a1, a2 = windHourList[i].split(":")
+#     if(date == windDatelist[i]):
+#         if(windHour == hourList):
+#             windlist
 
 months = {
     "31": [1, 3, 5, 7, 8, 10, 12],
