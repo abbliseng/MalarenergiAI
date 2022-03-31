@@ -47,8 +47,10 @@ rawData = csv.reader(open(fileName), delimiter=';')
 newFile = csv.writer(open(writeFileName, "w", newline=''), delimiter=';')
 
 sameValue = []
+sameTemp = []
 compareDate = ""
 average = 0
+averageTemp = 0
 averageList = []
 finalList = []
 
@@ -72,24 +74,34 @@ for row in rawData:
 
     if len(sameValue) == 0 or compareDate == date2:
         row[-1] = row[-1].replace(",", ".")
+        row[2] = row[2].replace(",", ".")
         sameValue.append(float(row[-1]))
+        sameTemp.append(float(row[2]))
         compareDate = date2
     else:
         for value in sameValue:
             average += value
+        for temp in sameTemp:
+            averageTemp += temp
         average = average/len(sameValue)
-        averageList.append(compareDate + ' ' + str(average))
+        averageTemp = averageTemp/len(sameTemp)
+        averageList.append(compareDate + ' '+ str(averageTemp) +' ' + str(average))
         compareDate = " "
         sameValue = []
+        sameTemp = []
+        average =0
+        averageTemp=0
         row[-1] = row[-1].replace(",", ".")
+        row[2] = row[2].replace(",", ".")
         sameValue.append(float(row[-1]))
+        sameTemp.append(float(row[2]))
         compareDate = date2
     
    
 
 
 for i in averageList:
-    date, hourList, averageValue = i.split(' ')
+    date, hourList, averageTemp ,averageValue = i.split(' ')
     yearList, line, monthDay = date.partition('-')
     monthList, line2, dayList = monthDay.partition('-')
     # print(monthList, dayList, hourList,averageValue)
@@ -98,6 +110,7 @@ for i in averageList:
     finalList.append(int(monthList))
     finalList.append(int(dayList))
     finalList.append(int(hourList))
+    finalList.append(float(averageTemp))
     finalList.append(float(averageValue))
     newFile.writerow(finalList)
     finalList = []
