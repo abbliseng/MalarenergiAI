@@ -1,0 +1,11 @@
+Lisa - Hittade data om soltimmar
+
+Saga - MSELoss ger 4% med ny data, L1Loss med senaste datan ger 9-10%
+
+Ida - Försökte lösa svarta märken på y-axeln
+
+Carl - Hittade data om vindhastighet
+
+Linus - Sjuk
+
+Mathias - Sammanställde och omformulerade all data
