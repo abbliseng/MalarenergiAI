@@ -1,25 +1,34 @@
 import csv
 from unicodedata import decimal
-
 from numpy import average
 
 fileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data\Data_Hallsta_torktumlad.csv"
 writeFileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data\Data_Hallsta_test.csv"
-
 windFileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data/vind_hastighet.csv"
-windFileData = csv.reader(open(windFileName), delimiter=';')
-windlist = []
 
+windFileData = csv.reader(open(windFileName), delimiter=';')
+rawData = csv.reader(open(fileName), delimiter=';')
+newFile = csv.writer(open(writeFileName, "w", newline=''), delimiter=';')
+
+windlist = []
 windDatelist = []
 windHourList = []
+realWindHourList = []
+sameValue = []
+sameTemp = []
+compareDate = ""
+average = 0
+averageTemp = 0
+averageList = []
+finalList = []
+
+
 for row in windFileData:
     windHourList.append(row[1])
     windDatelist.append(row[0])
     windlist.append(row[-2])
 
-
 def calculate_hour(hour, day, month, year):
-
     hour, day, month, year = int(hour), int(day), int(month), int(year)
     totalHour = 0
 
@@ -54,17 +63,6 @@ def calculate_hour(hour, day, month, year):
     return (totalHour)
 
 
-rawData = csv.reader(open(fileName), delimiter=';')
-newFile = csv.writer(open(writeFileName, "w", newline=''), delimiter=';')
-
-sameValue = []
-sameTemp = []
-compareDate = ""
-average = 0
-averageTemp = 0
-averageList = []
-finalList = []
-
 for row in rawData:
   
     head, sep, tail = row[0].partition(' ')
@@ -75,8 +73,6 @@ for row in rawData:
 
     # delar upp timme och minut
     hour, middle3, min = tail.partition(':')
-
-    # date, tV, tH, Ft, Fl, Rt, Effect = row[0].split(';')
 
     date2, middle4, rest = row[0].partition(':')
 
@@ -108,38 +104,19 @@ for row in rawData:
         sameTemp.append(float(row[2]))
         compareDate = date2
     
-realWindHourList = []
 for i in range(0, len(windDatelist)):
     hour, a1, a2 = windHourList[i].partition(':')
     realWindHourList.append(hour)
-    # print(windDatelist[i] + ":" + realWindHourList[i] + ";" + windlist[i])
-
-
-# for i in averageList:
-#     print(i)
+ 
 
 for i in averageList:
     date, hourList, averageTemp ,averageValue = i.split(' ')
     yearList, line, monthDay = date.partition('-')
     monthList, line2, dayList = monthDay.partition('-')
-    # print(monthList, dayList, hourList,averageValue)
-    # newFile.writerow(int(monthList) , int(dayList) , int(hourList), float(averageValue))
-    # finalList.append(int(yearList))
-    # finalList.append(int(monthList))
-    # finalList.append(int(dayList))
-    # finalList.append(int(hourList))
-    # finalList.append(float(averageTemp))
-    # finalList.append(float(averageValue))
-    # newFile.writerow(finalList)
-    # finalList = []
 
     for ii in range(0, len(windDatelist)):
-        # print("Ha")
         if(windDatelist[ii] == date):
-            # print("HaHa")
-            if(realWindHourList[ii] == hourList):
-                # print("HaHaHa")
-                
+            if(realWindHourList[ii] == hourList):   
                 finalList.append(int(yearList))
                 finalList.append(int(monthList))
                 finalList.append(int(dayList))
@@ -149,12 +126,6 @@ for i in averageList:
                 finalList.append(float(windlist[ii]))
                 newFile.writerow(finalList)
                 finalList = []
-
-# for i in range(0, len(windDatelist)):
-#     windHour, a1, a2 = windHourList[i].split(":")
-#     if(date == windDatelist[i]):
-#         if(windHour == hourList):
-#             windlist
 
 months = {
     "31": [1, 3, 5, 7, 8, 10, 12],
