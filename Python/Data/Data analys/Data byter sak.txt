@@ -1,0 +1,3 @@
+Data_Hallsta_2018
+2018-10-23 14:00:00 (Sista punkten innan den byter)
+2018-10-23 15:00:00 (Första med nya)
