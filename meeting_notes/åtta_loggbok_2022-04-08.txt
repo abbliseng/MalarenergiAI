@@ -1,0 +1,11 @@
+Lisa - Fixade klart soltimmar
+
+Saga - Försökte få högre procent rätt än 16%, testade olika dataformer och loss-funktioner, gick över till pytorch_lightning utan resultat
+
+Ida - Fixade grafen sist, jobbar mot att skriva in ett datum och få datan för den dagen
+
+Carl - Fick höra att han skulle göra random forest
+
+Linus - Vet inte
+
+Mathias - Vet inte
