@@ -1,5 +1,8 @@
 # MalarenergiAI
 Litet AI projekt där man ska förutspå värden på saker :)
+<p align="center">
+  <img src="malarenergiai_logo.jpg" />
+</p>
 ## Innehåll
 Projektet innefattar flertalet python-program som sorterar och omformaterar datan som användes i träningen av modellerna. De olika versionerna av datan ligger även sparade i en separat mapp.
 ## Planen & Processen
