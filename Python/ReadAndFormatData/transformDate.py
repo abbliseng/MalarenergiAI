@@ -2,9 +2,9 @@ import csv
 from unicodedata import decimal
 from numpy import average
 
-fileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data\Data_Hallsta_torktumlad.csv"
-writeFileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data\Data_Hallsta_test.csv"
-windFileName = "C:\Development\Malarenergi AI-projekt\Github\Python\Data/vind_hastighet.csv"
+fileName = "C:\Code\Python\MalarenergiAI\Python\Data\Sura\\Data_Sura_torktumlad.csv"
+writeFileName = "C:\Code\Python\MalarenergiAI\Python\Data\Sura\\Data_Sura_test.csv"
+windFileName = "C:\Code\Python\MalarenergiAI\Python\Data/vind_hastighet.csv"
 
 windFileData = csv.reader(open(windFileName), delimiter=';')
 rawData = csv.reader(open(fileName), delimiter=';')
