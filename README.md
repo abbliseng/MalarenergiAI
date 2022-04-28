@@ -26,4 +26,4 @@ Hämta realtidsvärden - Saga
 Sammanställa programmet och dela upp - Lisa  
 
 ## Resultat
-Genom random forest och datan från Surahammar lyckades vi få en träffsäkerhet på 99% med en marginal på +- 3 MWh. Utöver datan som teamet blev försedda med användes även vindhastigheten i området samt soltimmar. Däremot släpptes sedan soltimmar på grund av sin obefintliga påverkan.
+Genom random forest och datan från Surahammar lyckades vi få en träffsäkerhet på ca 60% med en marginal på +- 3 MWh. Utöver datan som teamet blev försedda med användes även vindhastigheten i området samt soltimmar. Däremot släpptes sedan soltimmar på grund av sin obefintliga påverkan.
