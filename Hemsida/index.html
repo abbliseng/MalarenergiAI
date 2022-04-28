@@ -1,0 +1,47 @@
+<html>
+<h1>Energipredikteraren 2.0</h1>
+<div>
+    <label for="fname">Temperatur</label>
+    <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+</div>
+<div>
+    <label for="lname">Datum</label>
+    <input type="text" id="date" name="date" placeholder="Datum">
+</div>
+<button onClick="othername()">Prediktera</button>
+
+<p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
+
+</html>
+
+<script>
+
+    function othername () {
+        var temperature = document.getElementById("temperature").value
+        var date = document.getElementById("date").value
+        document.getElementById("temperatureValue").innerHTML = temperature
+    }
+
+
+</script>
+
+<style>
+    h1 {
+        margin: 30px;
+        text-align: center;
+    }
+
+    label {
+        margin-left: 20px;
+    }
+
+    input {
+        margin: 20px;
+        padding: 10px;
+        max-width: 200px;
+    }
+
+    div {
+        display: grid;
+    }
+</style>
