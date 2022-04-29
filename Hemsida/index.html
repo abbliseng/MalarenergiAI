@@ -1,45 +1,50 @@
 <html>
-<div class="header">
-    <h1>Energispåkärringen</h1>
-    <p>En app för att förutspå energiförbrukningen</p>
-</div>
-<div class="Bigcontainer">
-    <div class="container">
-        <div class="inputs">
-            <label for="fname">Temperatur</label>
-            <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+    <body>
+        <div class="header">
+            <h1>Energispåkärringen</h1>
+            <p>En app för att förutspå energiförbrukningen</p>
         </div>
-        <div class="inputs">
-            <label for="lname">Datum</label>
-            <input type="text" id="date" name="date" placeholder="Datum">
+        <div class="Bigcontainer">
+            <div class="container">
+                <div class="inputs">
+                    <label for="fname">Temperatur</label>
+                    <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+                </div>
+                <div class="inputs">
+                    <label for="lname">Datum</label>
+                    <input type="text" id="date" name="date" placeholder="Datum">
+                </div>
+                <button onClick="othername()">Prediktera</button>
+            </div>
+
+            <p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
+
+            <div class="imgcontainer">
+                 <img class="img" src="mälar.jpg" alt="Girl in a jacket">
+            </div>
+           
         </div>
-        <button onClick="othername()">Prediktera</button>
-    </div>
-
-    <p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
-
-    <img src="mälar.jpg" alt="Girl in a jacket">
-</div>
 
 
-</html>
+        </html>
 
-<script>
+        <script>
 
-    function othername () {
-        var temperature = document.getElementById("temperature").value
-        var date = document.getElementById("date").value
-        document.getElementById("temperatureValue").innerHTML = temperature
-    }
+            function othername () {
+                var temperature = document.getElementById("temperature").value
+                var date = document.getElementById("date").value
+                document.getElementById("temperatureValue").innerHTML = temperature
+            }
 
 
-</script>
+        </script>
+    </body>
+
 
 <style>
     h1 {
         margin: 15px;
         text-align: center;
-        font: ;
     }
 
     p {}
@@ -56,6 +61,10 @@
 
     .inputs {
         display: grid;
+
+        /* &:hover
+        box-shadow: 0 16px 16px -4px rgba(#000, .1)
+        transform: scale(1.02) */
     }
 
     .container {
@@ -74,11 +83,29 @@
 
     body {
         margin: 0px;
+        margin: 0;
+        background-color: #EEE;
+        font-family: "Open Sans", sans-serif;
+        box-sizing: border-box;
+        cursor: default;
     }
 
     .Bigcontainer {
-        display: flex;
+        display:flex;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
+    }
 
+    .imgcontainer {
+        background-color: black;
+        margin: 10px;
+        
+    }
+
+    .img {
+        border-radius: 25px;
+        width: 95%;
+        height: 95%;
     }
 </style>
