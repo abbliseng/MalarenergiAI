@@ -3,19 +3,9 @@
 <body>
     <div class="header">
         <h1>Energispåkärringen</h1>
-        <!-- <p>En app för att förutspå energiförbrukningen</p> -->
     </div>
     <div class="Bigcontainer">
         <div class="container">
-            <!-- <div class="inputs">
-                <input type="text" id="år" name="år" placeholder="År">
-            </div>
-            <div class="inputs">
-                <input type="text" id="månad" name="månad" placeholder="Månad">
-            </div>
-            <div class="inputs">
-                <input type="text" id="dag" name="dag" placeholder="Dag">
-            </div> -->   
             <div class="inputs">
                 <input type="date" id="date" name="date" placeholder="Datum">
             </div>
@@ -74,18 +64,6 @@
 </html>
 
 <script>
-
-    function othername () {
-        var year = document.getElementById("år").value
-        var month = document.getElementById("månad").value
-        var day = document.getElementById("dag").value
-        var hour = document.getElementById("timme").value
-        var temperature = document.getElementById("temperature").value
-        // var date = document.getElementById("date").value
-        //document.getElementById("temperatureValue").innerHTML = temperature
-
-    }
-
     function predict() {
         var date = document.getElementById("date").value
         var hour = document.getElementById("timme").value
