@@ -35,37 +35,7 @@
             <img class="img" src="mälar.jpg" alt="Girl in a jacket">
         </div>
 
-        <div>
-            <table>
-                <tr>
-                    <th>Temperatur</th>
-                    <th>Effekt</th>
-                </tr>
-                <tr>
-                    <td>Alfreds Futterkiste</td>
-                    <td>Maria Anders</td>
-                </tr>
-                <tr>
-                    <td>Centro comercial Moctezuma</td>
-                    <td>Francisco Chang</td>
-                </tr>
-                <tr>
-                    <td>Ernst Handel</td>
-                    <td>Roland Mendel</td>
-                </tr>
-                <tr>
-                    <td>Island Trading</td>
-                    <td>Helen Bennett</td>
-                </tr>
-                <tr>
-                    <td>Laughing Bacchus Winecellars</td>
-                    <td>Yoshi Tannamuri</td>
-                </tr>
-                <tr>
-                    <td>Magazzini Alimentari Riuniti</td>
-                    <td>Giovanni Rovelli</td>
-                </tr>
-            </table>
+        <div id="table_div">
         </div>
 
     </div>
@@ -97,18 +67,32 @@
             });
     }
 
-    var mytable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"
+    var outputHTML = ""
+    var tempData = ["12", "22", "15", "12", "23", "11", "24", "19", "17"]
+    var powerData = ["122", "212", "125", "132", "253", "111", "254", "119", "127"]
+    var avgTemp = "15"
+    var avgPower = "18"
 
-    for (var i = 1; i < 31; i++) {
-        if (i % 3 == 1 && i != 1) {
-            mytable += "</tr><tr>"
-        }
-        mytable += "<td>[" + i + "]</td>"
+    outputHTML += "<table>"
+    outputHTML += "<tr>"
+    outputHTML += "<th>" + "Temperatur (°C)" + "</th>"
+    for (var i = 0; i < tempData.length; i++) {
+        outputHTML += "<td>" + tempData[i] + "</td>"
     }
+    outputHTML += "<th>" + avgTemp + "</th>"
+    outputHTML += "</tr>"
+    outputHTML += "<tr>"
+    outputHTML += "<th>" + "Effekt (MW)" + "</th>"
+    for (var i = 0; i < powerData.length; i++) {
+        outputHTML += "<td>" + powerData[i] + "</td>"
+    }
+    outputHTML += "<th>" + avgPower + "</th>"
+    outputHTML += "</tr>"
+    outputHTML += "</table>"
 
-    mytable += "</tr></tbody></table>"
 
-    document.write(mytable);
+    document.getElementById("table_div").innerHTML = outputHTML;
+
 
 
 </script>
@@ -121,7 +105,9 @@
         text-align: center;
     }
 
-    p {}
+    div {
+        margin-bottom: 40px;
+    }
 
     label {
         margin-left: 20px;
@@ -177,8 +163,6 @@
 
     .imgcontainer {
         background-color: black;
-        margin: 10px;
-
     }
 
     .img {
@@ -187,20 +171,22 @@
         height: 95%;
     }
 
+    table,
+    th,
+    td {
+        border: 1px solid;
+        padding: 10px;
+        text-align: center;
+    }
+
     table {
         font-family: arial, sans-serif;
         border-collapse: collapse;
         width: 100%;
     }
 
-    td,
     th {
-        border: 1px solid #dddddd;
         text-align: left;
-        padding: 8px;
-    }
-
-    tr:nth-child(even) {
-        background-color: #dddddd;
+        background-color: #bebcbc;
     }
 </style>
