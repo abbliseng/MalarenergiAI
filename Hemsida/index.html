@@ -1,16 +1,26 @@
 <html>
-<h1>Energipredikteraren 2.0</h1>
-<div>
-    <label for="fname">Temperatur</label>
-    <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+<div class="header">
+    <h1>Energispåkärringen</h1>
+    <p>En app för att förutspå energiförbrukningen</p>
 </div>
-<div>
-    <label for="lname">Datum</label>
-    <input type="text" id="date" name="date" placeholder="Datum">
-</div>
-<button onClick="othername()">Prediktera</button>
+<div class="Bigcontainer">
+    <div class="container">
+        <div class="inputs">
+            <label for="fname">Temperatur</label>
+            <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+        </div>
+        <div class="inputs">
+            <label for="lname">Datum</label>
+            <input type="text" id="date" name="date" placeholder="Datum">
+        </div>
+        <button onClick="othername()">Prediktera</button>
+    </div>
 
-<p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
+    <p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
+
+    <img src="mälar.jpg" alt="Girl in a jacket">
+</div>
+
 
 </html>
 
@@ -27,9 +37,12 @@
 
 <style>
     h1 {
-        margin: 30px;
+        margin: 15px;
         text-align: center;
+        font: ;
     }
+
+    p {}
 
     label {
         margin-left: 20px;
@@ -41,7 +54,31 @@
         max-width: 200px;
     }
 
-    div {
+    .inputs {
         display: grid;
+    }
+
+    .container {
+        display: flex;
+        padding-top: 20px;
+        align-items: center;
+    }
+
+    .header {
+        padding: 20px;
+        text-align: center;
+        background: #1abc9c;
+        color: white;
+        font-size: 20px;
+    }
+
+    body {
+        margin: 0px;
+    }
+
+    .Bigcontainer {
+        display: flex;
+        justify-content: center;
+
     }
 </style>
