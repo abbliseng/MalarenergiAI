@@ -1,44 +1,102 @@
 <html>
-    <body>
-        <div class="header">
-            <h1>Energispåkärringen</h1>
-            <p>En app för att förutspå energiförbrukningen</p>
-        </div>
-        <div class="Bigcontainer">
-            <div class="container">
-                <div class="inputs">
-                    <label for="fname">Temperatur</label>
-                    <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
-                </div>
-                <div class="inputs">
-                    <label for="lname">Datum</label>
-                    <input type="text" id="date" name="date" placeholder="Datum">
-                </div>
-                <button onClick="othername()">Prediktera</button>
+
+<body>
+    <div class="header">
+        <h1>Energispåkärringen</h1>
+        <!-- <p>En app för att förutspå energiförbrukningen</p> -->
+    </div>
+    <div class="Bigcontainer">
+        <div class="container">
+            <div class="inputs">
+                <input type="text" id="år" name="år" placeholder="År">
             </div>
-
-            <p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
-
-            <div class="imgcontainer">
-                 <img class="img" src="mälar.jpg" alt="Girl in a jacket">
+            <div class="inputs">
+                <input type="text" id="månad" name="månad" placeholder="Månad">
             </div>
-           
+            <div class="inputs">
+                <input type="text" id="dag" name="dag" placeholder="Dag">
+            </div>
+            <div class="inputs">
+                <input type="text" id="timme" name="timme" placeholder="Timme">
+            </div>
+            <div class="inputs">
+                <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+            </div>
+            <!-- <div class="inputs">
+                <label for="lname">Datum</label>
+                <input type="date" id="date" name="date" placeholder="Datum">
+            </div> -->
+            <button onClick="othername()">Prediktera</button>
         </div>
 
+        <p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
 
-        </html>
+        <div class="imgcontainer">
+            <img class="img" src="mälar.jpg" alt="Girl in a jacket">
+        </div>
 
-        <script>
+        <div>
+            <table>
+                <tr>
+                    <th>Temperatur</th>
+                    <th>Effekt</th>
+                </tr>
+                <tr>
+                    <td>Alfreds Futterkiste</td>
+                    <td>Maria Anders</td>
+                </tr>
+                <tr>
+                    <td>Centro comercial Moctezuma</td>
+                    <td>Francisco Chang</td>
+                </tr>
+                <tr>
+                    <td>Ernst Handel</td>
+                    <td>Roland Mendel</td>
+                </tr>
+                <tr>
+                    <td>Island Trading</td>
+                    <td>Helen Bennett</td>
+                </tr>
+                <tr>
+                    <td>Laughing Bacchus Winecellars</td>
+                    <td>Yoshi Tannamuri</td>
+                </tr>
+                <tr>
+                    <td>Magazzini Alimentari Riuniti</td>
+                    <td>Giovanni Rovelli</td>
+                </tr>
+            </table>
+        </div>
 
-            function othername () {
-                var temperature = document.getElementById("temperature").value
-                var date = document.getElementById("date").value
-                document.getElementById("temperatureValue").innerHTML = temperature
-            }
+    </div>
 
 
-        </script>
-    </body>
+</html>
+
+<script>
+
+    function othername () {
+        var temperature = document.getElementById("temperature").value
+        // var date = document.getElementById("date").value
+        document.getElementById("temperatureValue").innerHTML = temperature
+    }
+
+    var mytable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"
+
+    for (var i = 1; i < 31; i++) {
+        if (i % 3 == 1 && i != 1) {
+            mytable += "</tr><tr>"
+        }
+        mytable += "<td>[" + i + "]</td>"
+    }
+
+    mytable += "</tr></tbody></table>"
+
+    document.write(mytable);
+
+
+</script>
+</body>
 
 
 <style>
@@ -57,6 +115,10 @@
         margin: 20px;
         padding: 10px;
         max-width: 200px;
+    }
+
+    button {
+        padding: 10px;
     }
 
     .inputs {
@@ -91,7 +153,7 @@
     }
 
     .Bigcontainer {
-        display:flex;
+        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -100,12 +162,29 @@
     .imgcontainer {
         background-color: black;
         margin: 10px;
-        
+
     }
 
     .img {
         border-radius: 25px;
         width: 95%;
         height: 95%;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
     }
 </style>
