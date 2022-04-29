@@ -7,14 +7,25 @@
     </div>
     <div class="Bigcontainer">
         <div class="container">
-            <!-- <div class="inputs">
-                <label for="fname">Temperatur</label>
-                <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
-            </div> -->
             <div class="inputs">
+                <input type="text" id="år" name="år" placeholder="År">
+            </div>
+            <div class="inputs">
+                <input type="text" id="månad" name="månad" placeholder="Månad">
+            </div>
+            <div class="inputs">
+                <input type="text" id="dag" name="dag" placeholder="Dag">
+            </div>
+            <div class="inputs">
+                <input type="text" id="timme" name="timme" placeholder="Timme">
+            </div>
+            <div class="inputs">
+                <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+            </div>
+            <!-- <div class="inputs">
                 <label for="lname">Datum</label>
                 <input type="date" id="date" name="date" placeholder="Datum">
-            </div>
+            </div> -->
             <button onClick="othername()">Prediktera</button>
         </div>
 
@@ -66,8 +77,8 @@
 
     function othername () {
         var temperature = document.getElementById("temperature").value
-        var date = document.getElementById("date").value
-        document.getElementById("temperatureValue").innerHTML = date
+        // var date = document.getElementById("date").value
+        document.getElementById("temperatureValue").innerHTML = temperature
     }
 
     var mytable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"
