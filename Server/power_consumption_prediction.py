@@ -117,8 +117,12 @@ def run_prediction(pred_val):
     res = test_model(rf, pred_val)
     return res
 
-def run_program(date):
-    t, w = get_temp(date)
+def run_program(date, temp = None):
+    if temp != None:
+        t = float(temp)
+        w = 0
+    else:
+        t, w = get_temp(date)
     date, hour = date.split(' ')
     year, month, day = date.split('-')
     pred_values = [[year, month, day, hour, t, w]]

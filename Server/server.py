@@ -1,7 +1,14 @@
 import imp
 from flask import Flask, render_template, request, redirect, jsonify
+from jinja2 import Undefined
 from power_consumption_prediction import run_program
+
+UPLOAD_FOLDER = 'static/uploads/'
+
 app = Flask(__name__)
+app.secret_key = "secret key"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # @app.route('/')
 # def index():
@@ -18,17 +25,33 @@ def home_page():
     example_embed='This string is from python'
     return render_template('index.html', embed=example_embed)
 
-@app.route('/test/<date>/<hour>', methods=['GET'])
+# Get effect from date and hour, gets wind and temp
+@app.route('/predict/<date>/<hour>', methods=['GET'])
 def testfn(date, hour):
     # GET request
-    print(date, hour)
     if request.method == 'GET':
-        message = {'prediction_value':str(run_program(date+' '+hour)[0])}
-        return jsonify(message)  # serialize and use JSON headers
-    # POST request
-    #if request.method == 'POST':
-    #    print(request.get_json())  # parse as JSON
-    #    return 'Sucesss', 200
+        message = {
+            'status': 200,
+            'date': date,
+            'hour': hour,
+            'prediction_value':str(run_program(date+' '+hour)[0])
+            }
+        return jsonify(message)
+# Get effect from date, hour and temp. wind should be 0?
+@app.route('/predict/<date>/<hour>/<temp>', methods=['GET'])
+def testfn2(date, hour, temp):
+    # GET request
+    if request.method == 'GET':
+        message = {
+            'status': 200,
+            'date': date,
+            'hour': hour,
+            'temp': temp,
+            'prediction_value':str(run_program(date+' '+hour, temp)[0])
+            }
+        return jsonify(message)
+# If nothing is entered return a graph for the upcoming 24 hours
+# If only date: Get all avalible hours and plot on graph
 
 if __name__ == '__main__':
   app.run(debug=True)
