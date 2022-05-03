@@ -19,7 +19,7 @@ from datetime import datetime
  
 from os.path import exists
 
-dir = './Python/Data/Sura/Data_Sura_test.csv'
+dir = './Data_Sura_test.csv'
 
 def open_file(path):
     if (type(path) != str): return False
