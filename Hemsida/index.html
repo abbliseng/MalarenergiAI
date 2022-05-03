@@ -3,7 +3,6 @@
 <body>
     <div class="header">
         <h1>Energispåkärringen</h1>
-        <!-- <p>En app för att förutspå energiförbrukningen</p> -->
     </div>
     <div class="Bigcontainer">
         <div class="container">
@@ -15,7 +14,7 @@
             </div>
             <div class="inputs">
                 <input type="text" id="dag" name="dag" placeholder="Dag">
-            </div> -->   
+            </div> -->
             <div class="inputs">
                 <input type="date" id="date" name="date" placeholder="Datum">
             </div>
@@ -25,7 +24,7 @@
             <div class="inputs">
                 <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
             </div>
-         
+
             <button onClick="othername()">Prediktera</button>
         </div>
 
@@ -35,6 +34,7 @@
             <img class="img" src="mälar.jpg" alt="Girl in a jacket">
         </div>
 
+        <h1>Prognostierade värden för kommande 24 timmar</h1>
         <div id="table_div">
         </div>
 
@@ -56,15 +56,15 @@
 
     }
 
-    function predict() {
+    function predict () {
         var date = document.getElementById("date").value
-        fetch('/test/'+date+'/'+hour)
+        fetch('/test/' + date + '/' + hour)
             .then(function (response) {
-                return response.json();
+                return response.json()
             }).then(function (text) {
                 // console.log('GET response:');
                 // console.log(text.greeting); 
-            });
+            })
     }
 
     var outputHTML = ""
@@ -152,6 +152,7 @@
         font-family: "Open Sans", sans-serif;
         box-sizing: border-box;
         cursor: default;
+        user-select: none;
     }
 
     .Bigcontainer {
