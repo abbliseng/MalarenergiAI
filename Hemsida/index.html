@@ -41,7 +41,7 @@
         </card>
     </div>
 
-    <div class="header">
+    <div class="bottom">
         <!-- <h1>Info</h1> -->
         <p>Skriv in datum, timme och en temperatur för att få en förutspådd effekt för den timmen. 
             Om det inte skrivs in något datum så visas temperaturen för de nästa 24 timmarna i en graf.</p>
@@ -60,7 +60,7 @@
         // var date = document.getElementById("date").value
         //document.getElementById("temperatureValue").innerHTML = temperature
 
-    // }
+    }
 
     function predict () {
         var date = document.getElementById("date").value
@@ -155,6 +155,15 @@
         background: #1abc9c;
         color: white;
         font-size: 20px;
+    }
+
+    .bottom {
+        padding: 20px;
+        text-align: center;
+        background: #1abc9c;
+        color: white;
+        font-size: 20px;
+        margin-bottom: -16px;
     }
 
     body {
