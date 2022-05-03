@@ -2,6 +2,7 @@ import imp
 from flask import Flask, render_template, request, redirect, jsonify
 from jinja2 import Undefined
 from power_consumption_prediction import run_program
+from graph import drawGraph
 
 UPLOAD_FOLDER = 'static/uploads/'
 
@@ -10,15 +11,7 @@ app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-# @app.route('/')
-# def index():
-#   return render_template('index.html')
-
-@app.route('/power_pred/', methods = ['POST'])
-def pow_pred():
-    #date = "2022-04-30 12"
-    #return str(run_program(request.form['date'])[0])
-    return render_template('index.html', pred=str(run_program(request.form['date'])[0]))
+alt = False
 
 @app.route('/')
 def home_page():
@@ -52,29 +45,21 @@ def testfn2(date, hour, temp):
             }
         return jsonify(message)
 
-# If nothing is entered return a graph for the upcoming 24 hours
-@app.route('/predict', methods=['GET'])
-def testfn3():
-    # GET request
-    if request.method == 'GET':
-        message = {
-            'status': 200,
-            'prediction_value':str(run_program()[0])
-            }
-        return jsonify(message)
-
 # If only date: Get all avalible hours and plot on graph
 @app.route('/predict/<date>', methods=['GET'])
 def testfn4(date):
     # GET request
     if request.method == 'GET':
         prediction_value, temperatures, hours = run_program(date=date)
+        img_path = drawGraph(date, prediction_value, hours)
+        print(img_path)
         message = {
             'status': 200,
             'date': date,
             'prediction_value':prediction_value,
             'temperatures': temperatures,
-            'hours': hours
+            'hours': hours,
+            'img_path': img_path
             }
         return jsonify(message)
 

@@ -16,6 +16,8 @@ import pickle
 
 import requests
 from datetime import datetime
+ 
+from os.path import exists
 
 dir = './Python/Data/Sura/Data_Sura_test.csv'
 
@@ -115,59 +117,52 @@ def get_temp(date, hour = None):
         w = sum(windSpeed) / len(windSpeed)
         return t, w
 
-def run_prediction(pred_val):
-    print("Load model...")
-    rf = load_model()
-    print("Testing model...")
+def run_prediction(pred_val, rf):
+    print("Predicting...")
     res = test_model(rf, pred_val)
     return res
 
 def run_program(date = None, hour = None, temp = None):
-    # Om inget datum anges hämta kommande dygn
-
+    if exists("weights.pickle"):
+        print("Load model...")
+        rf = load_model()
+    else:
+        train_and_save_model()
+        rf = load_model()
     # Om temp anges använd den annars hämta den.
     if temp != None:
         t = float(temp)
         w = 0
     else:
-        # Om timme angetts hämta endast för den timmen annars hämta alla möjliga?
         if (hour != None): 
             t, w = get_temp(date, hour)
         else:
             t, h = get_temp(date)
             w = [0]*len(t)
-    #date, hour = date.split(' ')
     year, month, day = date.split('-')
-    # return True if isinstance(t, list) else False
     if isinstance(t, list):
         pred_values = []
         for i, t_v in enumerate(t):
-            pred_values.append(run_prediction([[year, month, day, h[i], t_v, w[i]]])[0])
+            pred_values.append(run_prediction([[year, month, day, h[i], t_v, w[i]]], rf)[0])
         return pred_values, t, h
     else:
         pred_values = [[year, month, day, hour, t, w]]
-        p = run_prediction(pred_values)
+        p = run_prediction(pred_values, rf)
     return p
 
-# print(run_program(date="2022-05-04", hour="12"))
+def train_and_save_model():
+    print("Loading data...")
+    dataset = open_file(dir)
+    print("Formatting data...")
+    dataset, data_list, labels = format_data(dataset)
+    print("Labeling data...")
+    train_features, test_features, train_labels, test_labels = train_test_split(dataset, labels, test_size = 0.25, random_state = 42)
+    print(test_labels)
+    print("Training model...")
+    rf = train_model(test_features, test_labels)
+    print("Saving Model...")
+    save_model(rf)
 
-#t, h = get_temp("2022-05-04")
-#test_value = [[2017.0, 12.0, 28.0, 4.0, 2.74, 2.3]] # 2.74, 2.3
-#run_prediction(test_value)
-
-#date = input('Name a date (YYYY-MM-DD TT). Note that a few dates ahead of time provide less amount of hours predicted.\n >>> ')
-# get_temp(date)
-#print(run_program(date))
+# print(run_program("2022-05-04"))
 
 
-#print("Loading data...")
-#dataset = open_file(dir)
-#print("Formatting data...")
-#dataset, data_list, labels = format_data(dataset)
-#print("Labeling data...")
-#train_features, test_features, train_labels, test_labels = train_test_split(dataset, labels, test_size = 0.25, random_state = 42)
-#print(test_labels)
-#print("Training model...")
-#rf = train_model(test_features, test_labels)
-#print("Saving Model...")
-#save_model(rf)
