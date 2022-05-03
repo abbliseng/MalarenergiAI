@@ -34,9 +34,10 @@ def testfn(date, hour):
             'status': 200,
             'date': date,
             'hour': hour,
-            'prediction_value':str(run_program(date+' '+hour)[0])
+            'prediction_value':str(run_program(date=date, hour=hour)[0])
             }
         return jsonify(message)
+
 # Get effect from date, hour and temp. wind should be 0?
 @app.route('/predict/<date>/<hour>/<temp>', methods=['GET'])
 def testfn2(date, hour, temp):
@@ -47,11 +48,36 @@ def testfn2(date, hour, temp):
             'date': date,
             'hour': hour,
             'temp': temp,
-            'prediction_value':str(run_program(date+' '+hour, temp)[0])
+            'prediction_value':str(run_program(date=date, hour=hour, temp=temp)[0])
             }
         return jsonify(message)
+
 # If nothing is entered return a graph for the upcoming 24 hours
+@app.route('/predict', methods=['GET'])
+def testfn3():
+    # GET request
+    if request.method == 'GET':
+        message = {
+            'status': 200,
+            'prediction_value':str(run_program()[0])
+            }
+        return jsonify(message)
+
 # If only date: Get all avalible hours and plot on graph
+@app.route('/predict/<date>', methods=['GET'])
+def testfn4(date):
+    # GET request
+    if request.method == 'GET':
+        prediction_value, temperatures, hours = run_program(date=date)
+        message = {
+            'status': 200,
+            'date': date,
+            'prediction_value':prediction_value,
+            'temperatures': temperatures,
+            'hours': hours
+            }
+        return jsonify(message)
+
 
 if __name__ == '__main__':
   app.run(debug=True)

@@ -44,11 +44,14 @@
             .then(function (response) {
                 return response.json();
             }).then(function (text) {
+                var predictions = text.prediction_value
+                var temps = text.temperatures
+                var hours = text.hours
                 // console.log(text.prediction_value);
                 // document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
             });
         }
-        else if (!temp && hour && date) {
+        else if (date && hour && !time) {
             fetch('/predict/'+date+'/'+hour)
             .then(function (response) {
                 return response.json();
@@ -57,7 +60,7 @@
                 if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
             });
         }
-        else if (temp && hour && date) {
+        else if (date && hour && time) {
             // Temp has been entered
             fetch('/predict/'+date+'/'+hour+'/'+temp)
             .then(function (response) {

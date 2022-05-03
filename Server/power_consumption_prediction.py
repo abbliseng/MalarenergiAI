@@ -72,8 +72,8 @@ def test_model(rf, test_features, test_labels = None):
     #print('Mean Absolute Error:', round(np.mean(errors), 2))
     return predictions
 
-def get_temp(date):
-    date, hour = date.split(' ')
+def get_temp(date, hour = None):
+    # date, hour = date.split(' ')
     #print(date, time)
     # Ifall användaren inte matat in ett korrekt datum tas bara dagens datum
     if len(date) != 10:
@@ -88,27 +88,32 @@ def get_temp(date):
     weatherData = r.json()
     # Antalet träffar på inmatade datumet
     availableHours = 0
+    aHours = []
     temp = []
     windSpeed = []
     # Lägger till temperatur och vindhastighet för alla timmar för det angivna datumet i två listor
     for item in weatherData["timeSeries"]:
         if (item["validTime"][0:10] == date):
+            aHours.append(item["validTime"][11:13])
             for row in item["parameters"]:
+                # print(row)
                 if row["name"] == 't':
                     temp.append(row["values"][0])
                 elif row["name"] == 'ws':
                     windSpeed.append(row["values"][0])
             availableHours += 1
+    if (hour == None):
+        return temp, aHours
     if (len(temp) <= 0):
         return False
     if (availableHours == 24):
         t = temp[int(hour)-1]
         w = windSpeed[int(hour)-1]
+        return t, w
     else:
         t = sum(temp) / len(temp)
         w = sum(windSpeed) / len(windSpeed)
-
-    return t, w
+        return t, w
 
 def run_prediction(pred_val):
     print("Load model...")
@@ -117,17 +122,36 @@ def run_prediction(pred_val):
     res = test_model(rf, pred_val)
     return res
 
-def run_program(date, temp = None):
+def run_program(date = None, hour = None, temp = None):
+    # Om inget datum anges hämta kommande dygn
+
+    # Om temp anges använd den annars hämta den.
     if temp != None:
         t = float(temp)
         w = 0
     else:
-        t, w = get_temp(date)
-    date, hour = date.split(' ')
+        # Om timme angetts hämta endast för den timmen annars hämta alla möjliga?
+        if (hour != None): 
+            t, w = get_temp(date, hour)
+        else:
+            t, h = get_temp(date)
+            w = [0]*len(t)
+    #date, hour = date.split(' ')
     year, month, day = date.split('-')
-    pred_values = [[year, month, day, hour, t, w]]
-    p = run_prediction(pred_values)
+    # return True if isinstance(t, list) else False
+    if isinstance(t, list):
+        pred_values = []
+        for i, t_v in enumerate(t):
+            pred_values.append(run_prediction([[year, month, day, h[i], t_v, w[i]]])[0])
+        return pred_values, t, h
+    else:
+        pred_values = [[year, month, day, hour, t, w]]
+        p = run_prediction(pred_values)
     return p
+
+# print(run_program(date="2022-05-04", hour="12"))
+
+#t, h = get_temp("2022-05-04")
 #test_value = [[2017.0, 12.0, 28.0, 4.0, 2.74, 2.3]] # 2.74, 2.3
 #run_prediction(test_value)
 
