@@ -33,7 +33,7 @@ Genom random forest och datan från Surahammar lyckades vi få en träffsäkerhe
   <img src="image_1.png" width="30%" height="30%"/>
 </p>  
  
-Utöver datan som teamet blev försedda med användes även vindhastigheten i området samt soltimmar. Däremot släpptes sedan soltimmar på grund av sin obefintliga påverkan. I den färdiga produkten hämtas den förutspådda datan i form av temperatur samt vindhastighet från SMHIs API. Den möjliga datan som du kan hämta har därför en räckvidd på nio dagar framåt. Däremot minskar antalet datapunkter ju längre från "idag" du hämtar datan, vilket vi löst genom att ta medelvärdet för att därför behålla antalet datapunkter.
+Utöver datan som teamet blev försedda med användes även vindhastighet samt soltimmar i området. Däremot släpptes sedan soltimmar och vindhastighet på grund av sin obefintliga påverkan. I den färdiga produkten hämtas den förutspådda datan i form av temperatur från SMHIs API. Den möjliga datan som du kan hämta har därför en räckvidd på nio dagar framåt. Däremot minskar antalet datapunkter ju längre från "idag" du hämtar datan, vilket vi löst genom att ta medelvärdet för att därför behålla antalet datapunkter.
 <p align="center">
   <img src="https://is2-ssl.mzstatic.com/image/thumb/Purple126/v4/86/e3/42/86e342b3-da1f-a620-b507-65c80418b7dd/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x630wa.png" width="50%" height="50%"/>
 </p> 

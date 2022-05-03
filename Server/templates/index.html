@@ -3,19 +3,10 @@
 <body>
     <div class="header">
         <h1>Energispåkärringen</h1>
+        <!-- <p>En app för att förutspå energiförbrukningen</p> -->
     </div>
     <div class="Bigcontainer">
-        <card class="card">
         <div class="container">
-            <!-- <div class="inputs">
-                <input type="text" id="år" name="år" placeholder="År">
-            </div>
-            <div class="inputs">
-                <input type="text" id="månad" name="månad" placeholder="Månad">
-            </div>
-            <div class="inputs">
-                <input type="text" id="dag" name="dag" placeholder="Dag">
-            </div> -->
             <div class="inputs">
                 <input type="date" id="date" name="date" placeholder="Datum">
             </div>
@@ -25,52 +16,60 @@
             <div class="inputs">
                 <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
             </div>
-
+         
             <button onClick="predict()">Prediktera</button>
         </div>
 
-        <p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
+        <p>Förutspåd effekt: <span id="pp"></span></p>
 
         <div class="imgcontainer">
-            <img class="img" src="mälar.jpg" alt="Girl in a jacket">
+            <img class="img" src="static/mälar.jpg" alt="Girl in a jacket">
         </div>
 
-        <h1>Prognostierade värden för kommande 24 timmar</h1>
         <div id="table_div">
         </div>
-        </card>
+
     </div>
 
 
 </html>
 
 <script>
-
-    function othername () {
-        var year = document.getElementById("år").value
-        var month = document.getElementById("månad").value
-        var day = document.getElementById("dag").value
-        var hour = document.getElementById("timme").value
-        var temperature = document.getElementById("temperature").value
-        // var date = document.getElementById("date").value
-        //document.getElementById("temperatureValue").innerHTML = temperature
-
-    // }
-
-    function predict () {
+    function predict() {
         var date = document.getElementById("date").value
         var hour = document.getElementById("timme").value
+        var temp = document.getElementById("temperature").value
+        if (date && !hour && !temp) {
+            fetch('/predict/'+date)
+            .then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                // console.log(text.prediction_value);
+                // document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
+            });
+        }
+        else if (!temp && hour && date) {
+            fetch('/predict/'+date+'/'+hour)
+            .then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                //console.log(text.prediction_value);
+                if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
+            });
+        }
+        else if (temp && hour && date) {
+            // Temp has been entered
+            fetch('/predict/'+date+'/'+hour+'/'+temp)
+            .then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
+            });
+        }
         if (!hour) {
             // Get for every hour
         }
-        fetch('/test/' + date + '/' + hour)
-            .then(function (response) {
-                return response.json()
-            }).then(function (text) {
-                console.log('GET response:')
-                console.log(text.prediction_value)
-                document.getElementById("predValue").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
-            })
+        
     }
 
     var outputHTML = ""
@@ -123,8 +122,6 @@
         margin: 20px;
         padding: 10px;
         max-width: 200px;
-        border-color: #a7a7a7;
-        border-radius: 18px;
     }
 
     button {
@@ -133,6 +130,7 @@
 
     .inputs {
         display: grid;
+
         /* &:hover
         box-shadow: 0 16px 16px -4px rgba(#000, .1)
         transform: scale(1.02) */
@@ -159,7 +157,6 @@
         font-family: "Open Sans", sans-serif;
         box-sizing: border-box;
         cursor: default;
-        user-select: none;
     }
 
     .Bigcontainer {
@@ -196,12 +193,5 @@
     th {
         text-align: left;
         background-color: #bebcbc;
-    }
-
-    .card {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        transition: 0.3s;
-        width: 40%;
-        border-radius: 5px;
     }
 </style>
