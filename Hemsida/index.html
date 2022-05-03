@@ -6,6 +6,7 @@
         <!-- <p>En app för att förutspå energiförbrukningen</p> -->
     </div>
     <div class="Bigcontainer">
+        <card class="card">
         <div class="container">
             <!-- <div class="inputs">
                 <input type="text" id="år" name="år" placeholder="År">
@@ -67,7 +68,7 @@
                 </tr>
             </table>
         </div>
-
+        </card>
     </div>
 
 
@@ -75,17 +76,17 @@
 
 <script>
 
-    function othername () {
-        var year = document.getElementById("år").value
-        var month = document.getElementById("månad").value
-        var day = document.getElementById("dag").value
-        var hour = document.getElementById("timme").value
-        var temperature = document.getElementById("temperature").value
-        // var date = document.getElementById("date").value
-        if (year  
-        //document.getElementById("temperatureValue").innerHTML = temperature
+    // function othername () {
+    //     var year = document.getElementById("år").value
+    //     var month = document.getElementById("månad").value
+    //     var day = document.getElementById("dag").value
+    //     var hour = document.getElementById("timme").value
+    //     var temperature = document.getElementById("temperature").value
+    //     // var date = document.getElementById("date").value
+    //     if (year  
+    //     //document.getElementById("temperatureValue").innerHTML = temperature
 
-    }
+    // }
 
     var mytable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"
 
@@ -121,6 +122,8 @@
         margin: 20px;
         padding: 10px;
         max-width: 200px;
+        border-color: #a7a7a7;
+        border-radius: 18px;
     }
 
     button {
@@ -129,7 +132,6 @@
 
     .inputs {
         display: grid;
-
         /* &:hover
         box-shadow: 0 16px 16px -4px rgba(#000, .1)
         transform: scale(1.02) */
@@ -166,7 +168,7 @@
     }
 
     .imgcontainer {
-        background-color: black;
+        background-color: #EEE;
         margin: 10px;
 
     }
@@ -192,5 +194,12 @@
 
     tr:nth-child(even) {
         background-color: #dddddd;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width: 40%;
+        border-radius: 5px;
     }
 </style>
