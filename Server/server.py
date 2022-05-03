@@ -4,6 +4,10 @@ from jinja2 import Undefined
 from power_consumption_prediction import run_program
 from graph import drawGraph
 
+import subprocess
+import webbrowser
+import os
+
 UPLOAD_FOLDER = 'static/uploads/'
 
 app = Flask(__name__)
@@ -63,6 +67,20 @@ def testfn4(date):
             }
         return jsonify(message)
 
+def run():
+    app.run(debug=True)
 
 if __name__ == '__main__':
-  app.run(debug=True)
+    # filename = 'file:///'+os.getcwd()+'/' + 'GFG.html'*
+    # # url = os.path.abspath("./templates/index.html")
+    # url = "http://localhost:5000"
+    # # or a file on your computer
+    # # url = "/Users/yourusername/Desktop/index.html
+    # try: # should work on Windows
+    #     os.startfile(url)
+    # except AttributeError:
+    #     try: # should work on MacOS and most linux versions
+    #         subprocess.call(['open', url])
+    #     except:
+    #         print('Could not open URL')
+    app.run(debug=True)
