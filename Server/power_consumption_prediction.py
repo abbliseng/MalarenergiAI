@@ -66,17 +66,10 @@ def calc_probability():
     pass
 
 def test_model(rf, test_features, test_labels = None):
-    # Use the forest's predict method on the test data
     predictions = rf.predict(test_features)
-    # Calculate the absolute errors
-    #errors = abs(predictions - test_labels)
-    # Print out the mean absolute error (mae)
-    #print('Mean Absolute Error:', round(np.mean(errors), 2))
     return predictions
 
 def get_temp(date, hour = None):
-    # date, hour = date.split(' ')
-    #print(date, time)
     # Ifall användaren inte matat in ett korrekt datum tas bara dagens datum
     if len(date) != 10:
         print("ERR: Incorrect input format. Using today's date.")
@@ -85,7 +78,6 @@ def get_temp(date, hour = None):
     r = requests.get(
         'https://opendata-download-metfcst.smhi.se/api/category/pmp3g/version/2/geotype/point/lon/16.6001/lat/59.5972/data.json')
 
-    
     # Rå data från SMHI:s API
     weatherData = r.json()
     # Antalet träffar på inmatade datumet
@@ -118,13 +110,13 @@ def get_temp(date, hour = None):
         return t, w
 
 def run_prediction(pred_val, rf):
-    print("Predicting...")
+    # print("Predicting...")
     res = test_model(rf, pred_val)
     return res
 
 def run_program(date = None, hour = None, temp = None):
     if exists("weights.pickle"):
-        print("Load model...")
+        print("Loading model...")
         rf = load_model()
     else:
         train_and_save_model()
@@ -140,6 +132,7 @@ def run_program(date = None, hour = None, temp = None):
             t, h = get_temp(date)
             w = [0]*len(t)
     year, month, day = date.split('-')
+    print("Predicting power consumption...")
     if isinstance(t, list):
         pred_values = []
         for i, t_v in enumerate(t):
@@ -162,7 +155,3 @@ def train_and_save_model():
     rf = train_model(test_features, test_labels)
     print("Saving Model...")
     save_model(rf)
-
-# print(run_program("2022-05-04"))
-
-
