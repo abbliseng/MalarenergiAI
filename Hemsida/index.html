@@ -25,7 +25,7 @@
                 <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
             </div>
 
-            <button onClick="othername()">Prediktera</button>
+            <button onClick="predict()">Prediktera</button>
         </div>
 
         <p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
@@ -58,12 +58,17 @@
 
     function predict () {
         var date = document.getElementById("date").value
+        var hour = document.getElementById("timme").value
+        if (!hour) {
+            // Get for every hour
+        }
         fetch('/test/' + date + '/' + hour)
             .then(function (response) {
                 return response.json()
             }).then(function (text) {
-                // console.log('GET response:');
-                // console.log(text.greeting); 
+                console.log('GET response:')
+                console.log(text.prediction_value)
+                document.getElementById("predValue").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
             })
     }
 
