@@ -39,6 +39,20 @@
             </div>
         </div>
 
+        <div class="container2">
+            <div class="training_container">
+                <div>
+                    <p class="heading">Imatning av träningsdata och träning av model</p>
+                    <p>Excel-fil med följande format [år, månad, dag, timme, temperatur, vindhastighet]</p>
+                    <input type="file"
+                    id="training_data" name="training_data"
+                    accept=".csv">
+                    <!-- <img id="graph" src="/static/graf.jpg" alt="graf"> -->
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <div class="bottom">
@@ -253,6 +267,14 @@
     }
 
     .input_container {
+        margin-top: 150px;
+        margin-bottom: 150px;
+        display: block;
+        align-items: center;
+        width: auto;
+    }
+
+    .training_container {
         margin-top: 150px;
         margin-bottom: 150px;
         display: block;
