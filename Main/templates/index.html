@@ -133,7 +133,7 @@
         //skriver ut skillnaden mellan nuvarande datum och date2
         // document.getElementById("Difference").innerHTML = Difference_In_Days;
 
-        if (Difference_In_Days < 0) {
+        if (Difference_In_Days <= 0) {
             var poppy = document.getElementById("negative_Warning")
             poppy.style.display = "block"
             return 400
