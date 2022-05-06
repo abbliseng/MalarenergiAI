@@ -1,8 +1,15 @@
 <html>
 
 <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <div class="header">
         <h1>Energispåkärringen</h1>
+    </div>
+
+    <div class="popupContainer" id="test" onclick="deletePopup(id)">
+        <i class="fa fa-warning"> </i>
+        Warning: Write in an hour and date
     </div>
 
     <div class="main_container">
@@ -12,18 +19,21 @@
         <div id="container1">
             <div class="input_container">
                 <p class="heading">Inmatning av värden</p>
-                <div class="inputs">
+                <div class="inputs" id="inputs">
                     <input type="date" id="date" name="date" placeholder="Datum">
                     <input type="text" id="timme" name="timme" placeholder="Timme">
                     <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
                     <button onClick="predict()">Prediktera</button>
                 </div>
-
+                <div id="loader" class="loader" style="display: none;"></div>
                 <!-- <p>Inmatad temperatur: <span id="temperatureValue"></span></p> -->
             </div>
         </div>
 
-        <div id="container2">
+
+
+        <p id="pp"></p>
+        <div class="container2">
             <div class="table_container">
                 <p class="heading">Prognostiserade värden för kommande 24 timmar</p>
                 <!-- <p class="heading">Prognostiserade värden för timme 0-12</p> -->
@@ -82,8 +92,52 @@
     //     });
     // }
 
-    function predict () {
+    function calculateDate () {
 
+        var month = new Date().getUTCMonth() + 1 //months from 1-12
+        var day = new Date().getUTCDate()
+        var year = new Date().getUTCFullYear()
+
+        //skriver ut nuvarande datum vid 'Date: ' (ska tas bort senare)
+        // document.getElementById("Date").innerHTML = year + "-" + month + "-" + day;
+
+        //Tar in och formaterar inskrivet datum
+        In_day = document.getElementById("date").value.replaceAll(/-/gi, '/')
+
+        //dela upp år, månad och dag för att kunna mata in i date2
+        // document.getElementById("date").innerHTML = In_day;
+
+        //definerar datum som ska beräknas
+        var date1 = new Date(year + "/" + month + "/" + day) // Datum idag
+        var date2 = new Date(In_day) // Inskrivet datum 
+
+
+        // beräknar skillnaden mellan date1 och date2
+        var Difference_In_Time = date2.getTime() - date1.getTime()
+
+        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24)
+
+        //skriver ut skillnaden mellan nuvarande datum och date2
+        // document.getElementById("Difference").innerHTML = Difference_In_Days;
+
+        if (Difference_In_Days < 0) {
+            var popup = "Ange ett kommande datum, inte ett passerat"
+            popup.classList.toggle("show")
+        }
+        else if (Difference_In_Days > 10) {
+            var popup = "Ange ett datum inmo de kommande 10 dagarna"
+            popup.classList.toggle("show")
+        };
+    }
+
+    function predict () {
+        var inp = document.getElementById("inputs")
+        var load = document.getElementById("loader")
+        inp.style.display = "none"
+        load.style.display = "block"
+
+        //börja ladda
+        calculateDate()
         var date = document.getElementById("date").value
         var hour = document.getElementById("timme").value
         var temp = document.getElementById("temperature").value
@@ -114,7 +168,10 @@
                     hours.forEach((x, i) => hours[i] = parseInt(x, 10))
                     document.getElementById("graph").src = img_path + '?' + new Date().getTime() // adding query to force image to reload
                     updateTable(predictions, temps, hours)
+                    inp.style.display = "block"
+                    load.style.display = "none"
                 })
+
         }
         else if (date && hour && !temp) {
             fetch('/predict/' + date + '/' + hour)
@@ -122,6 +179,8 @@
                     return response.json()
                 }).then(function (text) {
                     if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
+                    inp.style.display = "block"
+                    load.style.display = "none"
                 })
         }
         else if (date && hour && temp) {
@@ -131,12 +190,19 @@
                     return response.json()
                 }).then(function (text) {
                     document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
+                    inp.style.display = "block"
+                    load.style.display = "none"
                 })
+        }
+        else if (!hour && temp) {
+            var poppy = document.getElementById("test")
+            poppy.style.display = "block"
         }
 
         // document.getElementById("loading_container").style.display = "none"
         document.getElementById("container2").style.display = "flex"
         document.getElementById("container3").style.display = "flex"
+
     }
 
     function updateTable (predictions, temps, hours) {
@@ -275,6 +341,39 @@
 
         document.getElementById("table2").innerHTML = outputHTML2
     }
+
+    function deletePopup (id) {
+        document.getElementById(id).style.display = "none"
+    }
+
+    // var outputHTML = ""
+    // var tempData = ["12", "22", "15", "12", "23", "11", "24", "19", "17"]
+    // var powerData = ["122", "212", "125", "132", "253", "111", "254", "119", "127"]
+    // var avgTemp = "15"
+    // var avgPower = "18"
+
+    // outputHTML += "<table>"
+    // outputHTML += "<tr>"
+    // outputHTML += "<th>" + "Temperatur (°C)" + "</th>"
+    // for (var i = 0; i < tempData.length; i++) {
+    //     outputHTML += "<td>" + tempData[i] + "</td>"
+    // }
+    // outputHTML += "<th>" + avgTemp + "</th>"
+    // outputHTML += "</tr>"
+    // outputHTML += "<tr>"
+    // outputHTML += "<th>" + "Effekt (MW)" + "</th>"
+    // for (var i = 0; i < powerData.length; i++) {
+    //     outputHTML += "<td>" + powerData[i] + "</td>"
+    // }
+    // outputHTML += "<th>" + avgPower + "</th>"
+    // outputHTML += "</tr>"
+    // outputHTML += "</table>"
+
+
+    // document.getElementById("table").innerHTML = outputHTML;
+
+
+
 </script>
 
 
@@ -407,6 +506,29 @@
         margin-bottom: 150px;
     }
 
+    .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        /* Safari */
+        animation: spin 2s linear infinite;
+        /* Safari */
+        left: 50%;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
     img {
         border-radius: 25px;
         width: 80%;
@@ -429,5 +551,15 @@
     th {
         text-align: left;
         background-color: #bebcbc;
+    }
+
+    .popupContainer {
+        position: absolute;
+        top: 20%;
+        background-color: #FEEFB3;
+        color: #9F6000;
+        width: 100%;
+        padding: 16px;
+        display: none;
     }
 </style>
