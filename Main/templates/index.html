@@ -11,14 +11,17 @@
     <div class="popupContainer" id="test" onclick="deletePopup(id)">
         <i class="fa fa-warning"> </i>
         Warning: Write in an hour and date
+
     </div>
     <div class="popupContainer" id="negative_Warning" onclick="deletePopup(id)">
         <i class="fa fa-warning"> </i>
         Fel: Ange ett kommande datum, inte ett passerat
+        <a href="#" class="close"></a>
     </div>
     <div class="popupContainer" id="ToMuch_Warning" onclick="deletePopup(id)">
         <i class="fa fa-warning"> </i>
         Fel: Ange ett datum inom de kommande 10 dagarna
+        <a href="#" class="close"></a>
     </div>
     <div class="popupContainer" id="NoDate_Warning" onclick="deletePopup(id)">
         <i class="fa fa-warning"> </i>
@@ -588,4 +591,30 @@
         padding: 16px;
         display: none;
     }
+    .close {
+        position: absolute;
+        right: 32px;
+        top: 32px;
+        width: 32px;
+        height: 32px;
+        opacity: 0.3;
+    }
+    .close:hover {
+        opacity: 1;
+    }
+    .close:before, .close:after {
+        position: absolute;
+        left: 15px;
+        content: ' ';
+        height: 33px;
+        width: 2px;
+        background-color: #333;
+    }
+    .close:before {
+        transform: rotate(45deg);
+    }
+    .close:after {
+        transform: rotate(-45deg);
+    }
+
 </style>
