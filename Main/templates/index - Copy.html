@@ -1,0 +1,401 @@
+<html>
+
+<body>
+    <div class="header">
+        <h1>Energispåkärringen</h1>
+    </div>
+
+    <div class="popup">
+        <span class="popuptext" id="myPopup" onclick="deletePopup()">Write in an hour and date</span>
+    </div>
+
+    <div class="main_container">
+
+        <div class="container1">
+            <div class="input_container">
+                <p class="heading">Inmatning av värden</p>
+                <div class="inputs">
+                    <input type="date" id="date" name="date" placeholder="Datum">
+                    <input type="text" id="timme" name="timme" placeholder="Timme">
+                    <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+                    <button onClick="predict()">Prediktera</button>
+                </div>
+
+                <!-- <p>Inmatad temperatur: <span id="temperatureValue"></span></p> -->
+            </div>
+        </div>
+        
+
+        <p id="pp"></p>
+        <div class="container2">
+            <div class="table_container">
+                <p class="heading">Prognostierade värden för kommande 24 timmar</p>
+                <div id="table">
+                </div>
+            </div>
+        </div>
+
+        <div class="container1">
+            <div class="img_container">
+                <div>
+                    <p class="heading">Graf över kommande värden</p>
+                    <img id="graph" src="/static/graf.jpg" alt="graf">
+                </div>
+
+            </div>
+        </div>
+
+        <!-- <div class="container2">
+            <div class="training_container">
+                <div>
+                    <p class="heading">Imatning av träningsdata och träning av model</p>
+                    <p>Excel-fil med följande format [år, månad, dag, timme, temperatur, vindhastighet]</p>
+                    <div class="inputs">
+                        <input type="file" name="training_data" id="training_data" accept=".csv">
+                        <button onClick="train()">Träna</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+
+    <div class="bottom">
+        <!-- <h1>Info</h1> -->
+        <p>Skriv in datum, timme och en temperatur för att få en förutspådd effekt för den timmen.
+            Om det inte skrivs in något datum så visas temperaturen för de nästa 24 timmarna i en graf.</p>
+    </div>
+</body>
+
+</html>
+
+<script>
+    // function train() {
+    //     var training_data = document.getElementById("training_data").value
+    //     console.log(training_data)
+    //     $('input[type=file]').change(function () {
+    //         console.log(this.files[0].mozFullPath);
+    //     });
+    // }
+
+    function predict() {
+        var date = document.getElementById("date").value
+        var hour = document.getElementById("timme").value
+        var temp = document.getElementById("temperature").value
+        if (!date) {
+            // If no date is entered get tomorrows date.
+            var d = new Date();
+            d.setDate(d.getDate()+1)
+            var day = d.getDate()
+            var month = d.getMonth()+1
+            if (day < 10) {day = 0+day.toString()}
+            if (month < 10) {month = 0+month.toString()}
+            date = d.getFullYear()  + "-" + month + "-" + day
+        }
+        if (date && !hour && !temp) {
+            fetch('/predict/'+date)
+            .then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                var predictions = text.prediction_value
+                var temps = text.temperatures
+                var hours = text.hours
+                var img_path = text.img_path
+                predictions.forEach((p,i) => predictions[i] = p.toFixed(2))
+                temps.forEach((t,i) => temps[i] = t.toFixed(0))
+                hours.forEach((x,i) => hours[i] = parseInt(x, 10))
+                document.getElementById("graph").src = img_path +'?'+ new Date().getTime() // adding query to force image to reload
+                updateTable(predictions, temps, hours)
+            });
+        }
+        else if (date && hour && !temp) {
+            fetch('/predict/'+date+'/'+hour)
+            .then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
+            });
+        }
+        else if (date && hour && temp) {
+            // Temp has been entered
+            fetch('/predict/'+date+'/'+hour+'/'+temp)
+            .then(function (response) {
+                return response.json();
+            }).then(function (text) {
+                document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
+            });
+        }
+        else if(!hour && temp)
+        {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
+        
+    }
+
+    function updateTable(predictions, temps, hours) {
+        var outputHTML = ""
+        var tempData = temps
+        var powerData = predictions
+        var hourData = hours
+        var avgTemp = "15"
+        var avgPower = "18"
+
+        outputHTML += "<table>"
+        
+        
+        outputHTML += "<tr>"
+        outputHTML += "<th>" + "Timme" + "</th>"
+        for (var i = 0; i < hourData.length; i++) {
+            outputHTML += "<td>" + hourData[i] + "</td>"
+        }
+        // outputHTML += "<th>" + hourData.length() + "</th>"
+        outputHTML += "</tr>"
+        outputHTML += "<tr>"
+        outputHTML += "<th>" + "Temperatur (°C)" + "</th>"
+        for (var i = 0; i < tempData.length; i++) {
+            outputHTML += "<td>" + tempData[i] + "</td>"
+        }
+        outputHTML += "<th>" + avgTemp + "</th>"
+        outputHTML += "</tr>"
+        outputHTML += "<tr>"
+        outputHTML += "<th>" + "Effekt (MW)" + "</th>"
+        for (var i = 0; i < powerData.length; i++) {
+            outputHTML += "<td>" + powerData[i] + "</td>"
+        }
+        outputHTML += "<th>" + avgPower + "</th>"
+        outputHTML += "</tr>"
+        outputHTML += "</table>"
+
+
+        document.getElementById("table").innerHTML = outputHTML;
+    }
+
+    function deletePopup()
+    {
+        document.getElementById("myPopup").classList.toggle("show");
+    }
+
+    var outputHTML = ""
+    var tempData = ["12", "22", "15", "12", "23", "11", "24", "19", "17"]
+    var powerData = ["122", "212", "125", "132", "253", "111", "254", "119", "127"]
+    var avgTemp = "15"
+    var avgPower = "18"
+
+    outputHTML += "<table>"
+    outputHTML += "<tr>"
+    outputHTML += "<th>" + "Temperatur (°C)" + "</th>"
+    for (var i = 0; i < tempData.length; i++) {
+        outputHTML += "<td>" + tempData[i] + "</td>"
+    }
+    outputHTML += "<th>" + avgTemp + "</th>"
+    outputHTML += "</tr>"
+    outputHTML += "<tr>"
+    outputHTML += "<th>" + "Effekt (MW)" + "</th>"
+    for (var i = 0; i < powerData.length; i++) {
+        outputHTML += "<td>" + powerData[i] + "</td>"
+    }
+    outputHTML += "<th>" + avgPower + "</th>"
+    outputHTML += "</tr>"
+    outputHTML += "</table>"
+
+
+    document.getElementById("table").innerHTML = outputHTML;
+
+
+
+</script>
+
+
+
+<style>
+    h1 {
+        margin: 15px;
+        text-align: center;
+    }
+
+    label {
+        margin-left: 20px;
+    }
+
+    input {
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 10px;
+        max-width: 130px;
+        border-color: #a7a7a7;
+        border-radius: 10px;
+    }
+
+    button {
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 10px;
+        border-color: #a7a7a7;
+        border-radius: 10px;
+        background-color: rgb(91, 90, 90);
+        color: white;
+    }
+
+    .header {
+        padding: 20px;
+        text-align: center;
+        background: #1abc9c;
+        color: white;
+        font-size: 20px;
+    }
+
+    .bottom {
+        padding: 20px;
+        text-align: center;
+        background: #1abc9c;
+        color: white;
+        font-size: 20px;
+    }
+
+    .heading {
+        font-size: 25px;
+        text-align: center;
+    }
+
+    body {
+        margin: 0px;
+        margin: 0;
+        background-color: #EEE;
+        font-family: "Open Sans", sans-serif;
+        box-sizing: border-box;
+        cursor: default;
+        user-select: none;
+    }
+
+    .main_container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container1 {
+        background-color: rgb(231, 231, 231);
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .container2 {
+        background-color: #ffffff;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .input_container {
+        margin-top: 150px;
+        margin-bottom: 150px;
+        display: block;
+        align-items: center;
+        width: auto;
+    }
+
+    .training_container {
+        margin-top: 150px;
+        margin-bottom: 150px;
+        display: block;
+        align-items: center;
+        width: auto;
+    }
+
+    .inputs {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .img_container {
+        /* background-color: black; */
+        display: flex;
+        justify-content: center;
+        margin-top: 150px;
+        margin-bottom: 150px;
+        ;
+    }
+
+    .table_container {
+        margin-top: 150px;
+        margin-bottom: 150px;
+    }
+
+    img {
+        border-radius: 25px;
+        max-width: 50%;
+        max-height: 50%;
+    }
+
+    table,
+    th,
+    td {
+        border: 1px solid;
+        padding: 10px;
+        text-align: center;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th {
+        text-align: left;
+        background-color: #bebcbc;
+    }
+
+    .popup {
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .popup .popuptext {
+        visibility: hidden;
+        width: 160px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -80px;
+    }
+
+    .popup .popuptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .popup .show {
+        visibility: visible;
+        -webkit-animation: fadeIn 1s;
+        animation: fadeIn 1s
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity:1 ;}
+    }
+
+    @-webkit-keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+</style>
