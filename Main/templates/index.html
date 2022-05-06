@@ -139,11 +139,16 @@
         };
     }
 
+    //NY PREDICT!
+
+
+
+
     function predict () {
-        var inp = document.getElementById("inputs")
-        var load = document.getElementById("loader")
-        inp.style.display = "none"
-        load.style.display = "block"
+        // var inp = document.getElementById("inputs")
+        // var load = document.getElementById("loader")
+        // inp.style.display = "none"
+        // load.style.display = "block"
 
         //börja ladda
         calculateDate()
@@ -151,7 +156,7 @@
         var hour = document.getElementById("timme").value
         var temp = document.getElementById("temperature").value
 
-        document.getElementById("loading_container").style.display = "flex"
+        // document.getElementById("loading_container").style.display = "flex"
 
         if (!date) {
             // If no date is entered get tomorrows date.
@@ -164,6 +169,11 @@
             date = d.getFullYear() + "-" + month + "-" + day
         }
         if (date && !hour && !temp) {
+            var inp = document.getElementById("inputs")
+            var load = document.getElementById("loader")
+            inp.style.display = "none"
+            load.style.display = "block"
+
             fetch('/predict/' + date)
                 .then(function (response) {
                     return response.json()
@@ -355,34 +365,6 @@
         document.getElementById(id).style.display = "none"
     }
 
-    // var outputHTML = ""
-    // var tempData = ["12", "22", "15", "12", "23", "11", "24", "19", "17"]
-    // var powerData = ["122", "212", "125", "132", "253", "111", "254", "119", "127"]
-    // var avgTemp = "15"
-    // var avgPower = "18"
-
-    // outputHTML += "<table>"
-    // outputHTML += "<tr>"
-    // outputHTML += "<th>" + "Temperatur (°C)" + "</th>"
-    // for (var i = 0; i < tempData.length; i++) {
-    //     outputHTML += "<td>" + tempData[i] + "</td>"
-    // }
-    // outputHTML += "<th>" + avgTemp + "</th>"
-    // outputHTML += "</tr>"
-    // outputHTML += "<tr>"
-    // outputHTML += "<th>" + "Effekt (MW)" + "</th>"
-    // for (var i = 0; i < powerData.length; i++) {
-    //     outputHTML += "<td>" + powerData[i] + "</td>"
-    // }
-    // outputHTML += "<th>" + avgPower + "</th>"
-    // outputHTML += "</tr>"
-    // outputHTML += "</table>"
-
-
-    // document.getElementById("table").innerHTML = outputHTML;
-
-
-
 </script>
 
 
@@ -468,14 +450,14 @@
     #container2 {
         background-color: #D9F8F6;
         width: 100%;
-        display: none;
+        display: flex;
         justify-content: center;
     }
 
     #container3 {
         background-color: rgb(231, 231, 231);
         width: 100%;
-        display: none;
+        display: flex;
         justify-content: center;
     }
 
