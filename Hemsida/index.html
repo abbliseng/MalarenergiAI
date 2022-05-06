@@ -1,0 +1,235 @@
+<html>
+
+<body>
+    <div class="header">
+        <h1>Energispåkärringen</h1>
+        <!-- <p>En app för att förutspå energiförbrukningen</p> -->
+    </div>
+    <div class="Bigcontainer">
+        <div class="container">
+            <div class="inputs">
+                <input type="date" id="In_date" name="date" placeholder="Datum">
+            </div>
+            <div class="inputs">
+                <input type="text" id="timme" name="timme" placeholder="Timme">
+            </div>
+            <div class="inputs">
+                <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+            </div>
+         
+            <button onClick="othername()">Prediktera</button>
+            <button onClick="calculateDate()">Get date</button>
+
+        </div>
+
+        <p>Denna temperatur skickade du: <span id="temperatureValue"></span></p>
+        
+        <p>Date:<span id="Date"></span></p>
+        <p>Difference in days:<span id="Difference"></span></p>
+        <p>Input date<span id="date"></span></p>
+
+        <div class="imgcontainer">
+            <img class="img" src="mälar.jpg" alt="Girl in a jacket">
+        </div>
+
+        <div>
+            <table>
+                <tr>
+                    <th>Temperatur</th>
+                    <th>Effekt</th>
+                </tr>
+                <tr>
+                    <td>Alfreds Futterkiste</td>
+                    <td>Maria Anders</td>
+                </tr>
+                <tr>
+                    <td>Centro comercial Moctezuma</td>
+                    <td>Francisco Chang</td>
+                </tr>
+                <tr>
+                    <td>Ernst Handel</td>
+                    <td>Roland Mendel</td>
+                </tr>
+                <tr>
+                    <td>Island Trading</td>
+                    <td>Helen Bennett</td>
+                </tr>
+                <tr>
+                    <td>Laughing Bacchus Winecellars</td>
+                    <td>Yoshi Tannamuri</td>
+                </tr>
+                <tr>
+                    <td>Magazzini Alimentari Riuniti</td>
+                    <td>Giovanni Rovelli</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+
+</html>
+
+<script>
+
+// SKA ANVÄNDAS FÖR ATT RÄKNA UT OM DET ÄR 10 DAGAR FRAM ELLER INTE
+
+    function calculateDate () {
+
+        var month = new Date().getUTCMonth() + 1; //months from 1-12
+        var day = new Date().getUTCDate();
+        var year = new Date().getUTCFullYear();
+
+        //skriver ut nuvarande datum vid 'Date: ' (ska tas bort senare)
+        document.getElementById("Date").innerHTML = year + "-" + month + "-" + day;
+
+        //Tar in och formaterar inskrivet datum
+        In_day = document.getElementById("In_date").value.replaceAll(/-/gi,'/');
+
+        //dela upp år, månad och dag för att kunna mata in i date2
+        document.getElementById("date").innerHTML = In_day;
+
+        //definerar datum som ska beräknas
+        var date1 = new Date(year + "/" + month + "/" + day); // Datum idag
+        var date2 = new Date(In_day); // Inskrivet datum 
+        
+        
+        // beräknar skillnaden mellan date1 och date2
+        var Difference_In_Time = date2.getTime() - date1.getTime();
+        
+        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+        //skriver ut skillnaden mellan nuvarande datum och date2
+        document.getElementById("Difference").innerHTML = Difference_In_Days;
+
+        if (Difference_In_Days < 0) {
+            
+        }
+
+
+    }
+
+
+    function othername () {
+        // var year = document.getElementById("år").value;
+        // var month = document.getElementById("månad").value;
+        // var day = document.getElementById("dag").value;
+        // var hour = document.getElementById("timme").value;
+        // var datenow = document.getElementById("temperature").value;  
+        
+        // var date = document.getElementById("date").value
+        // if (year  )
+        // document.getElementById("date").innerHTML = document.getElementById("In_date").value
+        // document.getElementById("temperatureValue").innerHTML = temperature
+
+    }
+
+
+
+    var mytable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>"
+
+    for (var i = 1; i < 31; i++) {
+        if (i % 3 == 1 && i != 1) {
+            mytable += "</tr><tr>"
+        }
+        mytable += "<td>[" + i + "]</td>"
+    }
+
+    mytable += "</tr></tbody></table>"
+
+    document.write(mytable);
+
+
+</script>
+</body>
+
+
+<style>
+    h1 {
+        margin: 15px;
+        text-align: center;
+    }
+
+    p {}
+
+    label {
+        margin-left: 20px;
+    }
+
+    input {
+        margin: 20px;
+        padding: 10px;
+        max-width: 200px;
+    }
+
+    button {
+        padding: 10px;
+    }
+
+    .inputs {
+        display: grid;
+
+        /* &:hover
+        box-shadow: 0 16px 16px -4px rgba(#000, .1)
+        transform: scale(1.02) */
+    }
+
+    .container {
+        display: flex;
+        padding-top: 20px;
+        align-items: center;
+    }
+
+    .header {
+        padding: 20px;
+        text-align: center;
+        background: #1abc9c;
+        color: white;
+        font-size: 20px;
+    }
+
+    body {
+        margin: 0px;
+        margin: 0;
+        background-color: #EEE;
+        font-family: "Open Sans", sans-serif;
+        box-sizing: border-box;
+        cursor: default;
+    }
+
+    .Bigcontainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .imgcontainer {
+        background-color: black;
+        margin: 10px;
+
+    }
+
+    .img {
+        border-radius: 25px;
+        width: 95%;
+        height: 95%;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
