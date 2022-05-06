@@ -14,16 +14,17 @@
         <div class="container1">
             <div class="input_container">
                 <p class="heading">Inmatning av värden</p>
-                <div class="inputs">
+                <div class="inputs" id="inputs">
                     <input type="date" id="date" name="date" placeholder="Datum">
                     <input type="text" id="timme" name="timme" placeholder="Timme">
                     <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
                     <button onClick="predict()">Prediktera</button>
                 </div>
-
+                <div id="loader" class="loader" style="display: none;"></div>
                 <!-- <p>Inmatad temperatur: <span id="temperatureValue"></span></p> -->
             </div>
         </div>
+
         
 
         <p id="pp"></p>
@@ -85,7 +86,7 @@
         var year = new Date().getUTCFullYear();
 
         //skriver ut nuvarande datum vid 'Date: ' (ska tas bort senare)
-        document.getElementById("Date").innerHTML = year + "-" + month + "-" + day;
+        // document.getElementById("Date").innerHTML = year + "-" + month + "-" + day;
 
         //Tar in och formaterar inskrivet datum
         In_day = document.getElementById("date").value.replaceAll(/-/gi,'/');
@@ -107,17 +108,23 @@
         // document.getElementById("Difference").innerHTML = Difference_In_Days;
 
         if (Difference_In_Days < 0) {
-            var popup = "Ange ett kommande datum, inte ett passerat";
-            popup.classList.toggle("show");
-        };
-
-        elif (Difference_In_Days > 10) {
-            var popup = "Ange ett datum inmo de kommande 10 dagarna";
-            popup.classList.toggle("show");
+            var med = "Ange ett kommande datum, inte ett passerat";
+            // popup.classList.toggle("show");
+            console.log(med)
+        } else if (Difference_In_Days > 10) {
+            var med2 = "Ange ett datum inmo de kommande 10 dagarna";
+            console.log(med2)
+            // popup.classList.toggle("show");
         };
     }
 
     function predict() {
+        var inp = document.getElementById("inputs");
+        var load = document.getElementById("loader");
+        inp.style.display = "none";
+        load.style.display = "block";
+ 
+        //börja ladda
         calculateDate()
         var date = document.getElementById("date").value
         var hour = document.getElementById("timme").value
@@ -146,7 +153,10 @@
                 hours.forEach((x,i) => hours[i] = parseInt(x, 10))
                 document.getElementById("graph").src = img_path +'?'+ new Date().getTime() // adding query to force image to reload
                 updateTable(predictions, temps, hours)
-            });
+                inp.style.display = "block";
+                load.style.display = "none";
+            }); 
+
         }
         else if (date && hour && !temp) {
             fetch('/predict/'+date+'/'+hour)
@@ -154,6 +164,8 @@
                 return response.json();
             }).then(function (text) {
                 if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
+                inp.style.display = "block";
+                load.style.display = "none";
             });
         }
         else if (date && hour && temp) {
@@ -163,6 +175,8 @@
                 return response.json();
             }).then(function (text) {
                 document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
+                inp.style.display = "block";
+                load.style.display = "none";
             });
         }
         else if(!hour && temp)
@@ -362,6 +376,22 @@
     .table_container {
         margin-top: 150px;
         margin-bottom: 150px;
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite; /* Safari */
+        left: 50%;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 
     img {
