@@ -39,10 +39,9 @@
             </div>
         </div>
 
-
-
         <p id="pp"></p>
-        <div class="container2">
+
+        <div id="container2">
             <div class="table_container">
                 <p class="heading">Prognostiserade värden för kommande 24 timmar</p>
                 <!-- <p class="heading">Prognostiserade värden för timme 0-12</p> -->
@@ -55,7 +54,7 @@
         </div>
 
         <div id="container3">
-            <div class="img_container">
+            <div class=" img_container">
                 <div>
                     <p class="heading">Graf över prognos</p>
                     <img class="centerImage" id="graph" src="/static/graf.jpg" alt="graf">
@@ -139,12 +138,11 @@
         };
     }
 
-    //NY PREDICT!
-
-
-
-
     function predict () {
+
+        document.getElementById("container2").style.display = "flex"
+        document.getElementById("container3").style.display = "flex"
+
         // var inp = document.getElementById("inputs")
         // var load = document.getElementById("loader")
         // inp.style.display = "none"
@@ -155,8 +153,6 @@
         var date = document.getElementById("date").value
         var hour = document.getElementById("timme").value
         var temp = document.getElementById("temperature").value
-
-        // document.getElementById("loading_container").style.display = "flex"
 
         if (!date) {
             // If no date is entered get tomorrows date.
@@ -217,73 +213,10 @@
             var poppy = document.getElementById("test")
             poppy.style.display = "block"
         }
-
-        // document.getElementById("loading_container").style.display = "none"
-        document.getElementById("container2").style.display = "flex"
-        document.getElementById("container3").style.display = "flex"
-
     }
 
+
     function updateTable (predictions, temps, hours) {
-        // var outputHTML = ""
-        // var tempData = temps
-        // var powerData = predictions
-        // var hourData = hours
-        // var avgTemp = "15"
-        // var avgPower = "18"
-
-        // outputHTML += "<table>"
-
-
-        // outputHTML += "<tr>"
-        // outputHTML += "<th>" + "Timme" + "</th>"
-        // for (var i = 0; i < hourData.length; i++) {
-        //     outputHTML += "<td>" + hourData[i] + "</td>"
-        // }
-        // // outputHTML += "<th>" + hourData.length() + "</th>"
-        // outputHTML += "</tr>"
-        // outputHTML += "<tr>"
-        // outputHTML += "<th>" + "Temperatur (°C)" + "</th>"
-        // for (var i = 0; i < tempData.length; i++) {
-        //     outputHTML += "<td>" + tempData[i] + "</td>"
-        // }
-        // outputHTML += "<th>" + avgTemp + "</th>"
-        // outputHTML += "</tr>"
-        // outputHTML += "<tr>"
-        // outputHTML += "<th>" + "Effekt (MW)" + "</th>"
-        // for (var i = 0; i < powerData.length; i++) {
-        //     outputHTML += "<td>" + powerData[i] + "</td>"
-        // }
-        // outputHTML += "<th>" + avgPower + "</th>"
-        // outputHTML += "</tr>"
-        // outputHTML += "</table>"
-
-
-        // document.getElementById("table").innerHTML = outputHTML
-
-        //VERTIKAL TABLE
-        //
-        //
-        // var outputHTML = ""
-        // var tempData = temps
-        // var powerData = predictions
-        // var hourData = hours
-        // var avgTemp = "15"
-        // var avgPower = "18"
-
-        // outputHTML += "<table>"
-
-        // outputHTML += "<tr><th>Timme</th><th>Effekt</th><th>Temperatur</th></tr>"
-
-        // for (var i = 0; i < hourData.length; i++) {
-        //     outputHTML += "<tr><td>" + hourData[i] + "</td><td>" + tempData[i] + "</td><td>" + powerData[i] + "</td><td>" + "</tr>"
-        // }
-        // outputHTML += "</table>"
-
-        // document.getElementById("table").innerHTML = outputHTML
-        //
-        //
-        //
 
         var outputHTML1 = ""
         var outputHTML2 = ""
@@ -298,21 +231,8 @@
             sumPower += parseFloat(powerData[i])
         }
 
-        console.log(sumTemp)
-        console.log(sumPower)
-
-        console.log(typeof (sumTemp))
-        console.log(typeof (sumPower))
-
-
         var avgTemp = (sumTemp / tempData.length).toFixed(1)
         var avgPower = (sumPower / tempData.length).toFixed(2)
-
-        console.log(avgTemp)
-        console.log(avgPower)
-
-        console.log(typeof (avgTemp))
-        console.log(typeof (avgPower))
 
         outputHTML1 += "<table><tr>"
         outputHTML1 += "<th>" + "Timme (h)" + "</th>"
@@ -360,6 +280,7 @@
 
         document.getElementById("table2").innerHTML = outputHTML2
     }
+
 
     function deletePopup (id) {
         document.getElementById(id).style.display = "none"
@@ -450,14 +371,14 @@
     #container2 {
         background-color: #CAE6E4;
         width: 100%;
-        display: flex;
+        display: none;
         justify-content: center;
     }
 
     #container3 {
         background-color: rgb(231, 231, 231);
         width: 100%;
-        display: flex;
+        display: none;
         justify-content: center;
     }
 
