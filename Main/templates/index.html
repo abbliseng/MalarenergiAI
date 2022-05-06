@@ -20,6 +20,10 @@
         <i class="fa fa-warning"> </i>
         Fel: Ange ett datum inom de kommande 10 dagarna
     </div>
+    <div class="popupContainer" id="NoDate_Warning" onclick="deletePopup(id)">
+        <i class="fa fa-warning"> </i>
+        Fel: Ange ett datum
+    </div>
 
     <div class="main_container">
 
@@ -132,11 +136,15 @@
         if (Difference_In_Days < 0) {
             var poppy = document.getElementById("negative_Warning")
             poppy.style.display = "block"
+            return 400
         }
         else if (Difference_In_Days > 10) {
             var poppy = document.getElementById("ToMuch_Warning")
             poppy.style.display = "block"
-        };
+            return 400
+        }
+        else
+            return 0
     }
 
     function predict() {
@@ -146,14 +154,19 @@
         // load.style.display = "block";
  
         //börja ladda
-        calculateDate()
+        if (calculateDate() == 0)
+        {
         var date = document.getElementById("date").value
         var hour = document.getElementById("timme").value
         var temp = document.getElementById("temperature").value
 
         // document.getElementById("loading_container").style.display = "flex"
-
-        if (!date) {
+        if((!date && temp) || (!date && hour))
+        {
+            var poppy = document.getElementById("NoDate_Warning")
+            poppy.style.display = "block"
+        }
+        else if (!date) {
             // If no date is entered get tomorrows date.
             var d = new Date()
             d.setDate(d.getDate() + 1)
@@ -226,6 +239,7 @@
         // document.getElementById("loading_container").style.display = "none"
         document.getElementById("container2").style.display = "flex"
         document.getElementById("container3").style.display = "flex"
+        }
 
     }
 
