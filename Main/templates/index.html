@@ -121,10 +121,10 @@
     }
 
     function predict() {
-        var inp = document.getElementById("inputs");
-        var load = document.getElementById("loader");
-        inp.style.display = "none";
-        load.style.display = "block";
+        // var inp = document.getElementById("inputs");
+        // var load = document.getElementById("loader");
+        // inp.style.display = "none";
+        // load.style.display = "block";
  
         //börja ladda
         calculateDate()
@@ -142,6 +142,11 @@
             date = d.getFullYear()  + "-" + month + "-" + day
         }
         if (date && !hour && !temp) {
+            var inp = document.getElementById("inputs");
+            var load = document.getElementById("loader");
+            inp.style.display = "none";
+            load.style.display = "block";
+
             fetch('/predict/'+date)
             .then(function (response) {
                 return response.json();
@@ -161,6 +166,11 @@
 
         }
         else if (date && hour && !temp) {
+            var inp = document.getElementById("inputs");
+            var load = document.getElementById("loader");
+            inp.style.display = "none";
+            load.style.display = "block";
+
             fetch('/predict/'+date+'/'+hour)
             .then(function (response) {
                 return response.json();
@@ -172,6 +182,11 @@
         }
         else if (date && hour && temp) {
             // Temp has been entered
+            var inp = document.getElementById("inputs");
+            var load = document.getElementById("loader");
+            inp.style.display = "none";
+            load.style.display = "block";
+
             fetch('/predict/'+date+'/'+hour+'/'+temp)
             .then(function (response) {
                 return response.json();
