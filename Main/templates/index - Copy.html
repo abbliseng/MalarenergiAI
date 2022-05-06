@@ -1,15 +1,12 @@
 <html>
 
 <body>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <div class="header">
         <h1>Energispåkärringen</h1>
     </div>
 
-    <div class="popupContainer" id="test" onclick="deletePopup(id)">
-         <i class="fa fa-warning" > </i>
-         Warning: Write in an hour and date
+    <div class="popup">
+        <span class="popuptext" id="myPopup" onclick="deletePopup()">Write in an hour and date</span>
     </div>
 
     <div class="main_container">
@@ -81,46 +78,7 @@
     //     });
     // }
 
-    function calculateDate () {
-
-        var month = new Date().getUTCMonth() + 1; //months from 1-12
-        var day = new Date().getUTCDate();
-        var year = new Date().getUTCFullYear();
-
-        //skriver ut nuvarande datum vid 'Date: ' (ska tas bort senare)
-        document.getElementById("Date").innerHTML = year + "-" + month + "-" + day;
-
-        //Tar in och formaterar inskrivet datum
-        In_day = document.getElementById("date").value.replaceAll(/-/gi,'/');
-
-        //dela upp år, månad och dag för att kunna mata in i date2
-        // document.getElementById("date").innerHTML = In_day;
-
-        //definerar datum som ska beräknas
-        var date1 = new Date(year + "/" + month + "/" + day); // Datum idag
-        var date2 = new Date(In_day); // Inskrivet datum 
-
-
-        // beräknar skillnaden mellan date1 och date2
-        var Difference_In_Time = date2.getTime() - date1.getTime();
-
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-
-        //skriver ut skillnaden mellan nuvarande datum och date2
-        // document.getElementById("Difference").innerHTML = Difference_In_Days;
-
-        if (Difference_In_Days < 0) {
-            var popup = "Ange ett kommande datum, inte ett passerat";
-            popup.classList.toggle("show");
-        }
-        else if (Difference_In_Days > 10) {
-            var popup = "Ange ett datum inmo de kommande 10 dagarna";
-            popup.classList.toggle("show");
-        };
-    }
-
     function predict() {
-        calculateDate()
         var date = document.getElementById("date").value
         var hour = document.getElementById("timme").value
         var temp = document.getElementById("temperature").value
@@ -169,8 +127,8 @@
         }
         else if(!hour && temp)
         {
-            var poppy = document.getElementById("test");
-            poppy.style.display = "block";
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
         }
         
     }
@@ -213,9 +171,9 @@
         document.getElementById("table").innerHTML = outputHTML;
     }
 
-    function deletePopup(id)
+    function deletePopup()
     {
-        document.getElementById(id).style.display = "none";
+        document.getElementById("myPopup").classList.toggle("show");
     }
 
     var outputHTML = ""
@@ -391,13 +349,53 @@
         background-color: #bebcbc;
     }
 
-    .popupContainer {
+    .popup {
         position: absolute;
+        left: 50%;
         top: 20%;
-        background-color: #FEEFB3;
-        color: #9F6000;
-        width: 100%;
-        padding: 16px;
-        display: none;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .popup .popuptext {
+        visibility: hidden;
+        width: 160px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -80px;
+    }
+
+    .popup .popuptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .popup .show {
+        visibility: visible;
+        -webkit-animation: fadeIn 1s;
+        animation: fadeIn 1s
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity:1 ;}
+    }
+
+    @-webkit-keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
     }
 </style>
