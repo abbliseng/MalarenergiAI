@@ -30,8 +30,6 @@
 
     <div class="main_container">
 
-
-
         <div id="container1">
             <div class="input_container">
                 <p class="heading">Inmatning av värden</p>
@@ -46,7 +44,7 @@
             </div>
         </div>
 
-        <p id="pp"></p>
+        <!-- <p id="pp"></p>  -->
 
         <div id="container2">
             <div class="table_container">
@@ -64,9 +62,8 @@
             <div class=" img_container">
                 <div>
                     <p class="heading">Graf över prognos</p>
-                    <img class="centerImage" id="graph" src="/static/graf.jpg" alt="graf">
+                    <img class="centerImage" id="graph" src="" alt="graf">
                 </div>
-
             </div>
         </div>
 
@@ -84,10 +81,6 @@
         </div> -->
 
     </div>
-
-    <!-- NYTT TABLE -->
-
-
 
     <div class="bottom">
         <!-- <h1>Info</h1> -->
@@ -149,11 +142,7 @@
             return 0
     }
 
-    function predict () {
-
-        document.getElementById("container2").style.display = "flex"
-        document.getElementById("container3").style.display = "flex"
-
+    async function predict () {
         // var inp = document.getElementById("inputs")
         // var load = document.getElementById("loader")
         // inp.style.display = "none"
@@ -179,6 +168,7 @@
                 if (day < 10) { day = 0 + day.toString() }
                 if (month < 10) { month = 0 + month.toString() }
                 date = d.getFullYear() + "-" + month + "-" + day
+
             }
             if (date && !hour && !temp) {
                 var inp = document.getElementById("inputs")
@@ -218,6 +208,7 @@
                         inp.style.display = "block"
                         load.style.display = "none"
                     })
+
             }
             else if (date && hour && temp) {
                 // Temp has been entered
@@ -234,6 +225,7 @@
                         inp.style.display = "block"
                         load.style.display = "none"
                     })
+
             }
             else if (!hour && temp) {
                 var poppy = document.getElementById("test")
@@ -241,76 +233,87 @@
             }
         }
 
+        document.getElementById("container2").style.display = "flex"
+        document.getElementById("container3").style.display = "flex"
 
-        function updateTable (predictions, temps, hours) {
+    }
 
-            var outputHTML1 = ""
-            var outputHTML2 = ""
-            var tempData = temps
-            var powerData = predictions
-            var hourData = hours
-            var sumTemp = 0
-            var sumPower = 0
+    // function showInfo (_callback) {
+    //     // document.getElementById("container2").style.display = "flex"
+    //     // document.getElementById("container3").style.display = "flex"
+    //     _callback()
+    // }
 
-            for (i = 0; i < tempData.length; i++) {
-                sumTemp += parseInt(tempData[i])
-                sumPower += parseFloat(powerData[i])
-            }
 
-            var avgTemp = (sumTemp / tempData.length).toFixed(1)
-            var avgPower = (sumPower / tempData.length).toFixed(2)
+    function updateTable (predictions, temps, hours) {
 
-            outputHTML1 += "<table><tr>"
-            outputHTML1 += "<th>" + "Timme (h)" + "</th>"
-            for (var i = 0; i < 13; i++) {
-                outputHTML1 += "<td>" + hourData[i] + ":00" + "</td>"
-            }
-            outputHTML1 += "</tr>"
-            outputHTML1 += "<tr>"
-            outputHTML1 += "<th>" + "Temperatur (°C)" + "</th>"
-            for (var i = 0; i < 13; i++) {
-                outputHTML1 += "<td>" + tempData[i] + "</td>"
-            }
-            outputHTML1 += "</tr>"
-            outputHTML1 += "<tr>"
-            outputHTML1 += "<th>" + "Effekt (MW)" + "</th>"
-            for (var i = 0; i < 13; i++) {
-                outputHTML1 += "<td>" + powerData[i] + "</td>"
-            }
-            outputHTML1 += "</tr></table>"
+        var outputHTML1 = ""
+        var outputHTML2 = ""
+        var tempData = temps
+        var powerData = predictions
+        var hourData = hours
+        var sumTemp = 0
+        var sumPower = 0
 
-            document.getElementById("table1").innerHTML = outputHTML1
-
-            //DEL TVÅ AV TABELLEN
-
-            outputHTML2 += "<table><tr>"
-
-            outputHTML2 += "<th>" + "Timme (h)" + "</th>"
-            for (var i = 13; i < 24; i++) {
-                outputHTML2 += "<td>" + hourData[i] + ":00" + "</td>"
-            }
-            outputHTML2 += "<th>" + "Medel" + "</th>"
-            outputHTML2 += "</tr><tr>"
-            outputHTML2 += "<th>" + "Temperatur (°C)" + "</th>"
-            for (var i = 13; i < 24; i++) {
-                outputHTML2 += "<td>" + tempData[i] + "</td>"
-            }
-            outputHTML2 += "<th>" + avgTemp + "</th>"
-            outputHTML2 += "</tr><tr>"
-            outputHTML2 += "<th>" + "Effekt (MW)" + "</th>"
-            for (var i = 13; i < 24; i++) {
-                outputHTML2 += "<td>" + powerData[i] + "</td>"
-            }
-            outputHTML2 += "<th>" + avgPower + "</th>"
-            outputHTML2 += "</tr></table>"
-
-            document.getElementById("table2").innerHTML = outputHTML2
+        for (i = 0; i < tempData.length; i++) {
+            sumTemp += parseInt(tempData[i])
+            sumPower += parseFloat(powerData[i])
         }
 
+        var avgTemp = (sumTemp / tempData.length).toFixed(1)
+        var avgPower = (sumPower / tempData.length).toFixed(2)
 
-        function deletePopup (id) {
-            document.getElementById(id).style.display = "none"
+        outputHTML1 += "<table><tr>"
+        outputHTML1 += "<th>" + "Timme (h)" + "</th>"
+        for (var i = 0; i < 13; i++) {
+            outputHTML1 += "<td>" + hourData[i] + ":00" + "</td>"
         }
+        outputHTML1 += "</tr>"
+        outputHTML1 += "<tr>"
+        outputHTML1 += "<th>" + "Temperatur (°C)" + "</th>"
+        for (var i = 0; i < 13; i++) {
+            outputHTML1 += "<td>" + tempData[i] + "</td>"
+        }
+        outputHTML1 += "</tr>"
+        outputHTML1 += "<tr>"
+        outputHTML1 += "<th>" + "Effekt (MW)" + "</th>"
+        for (var i = 0; i < 13; i++) {
+            outputHTML1 += "<td>" + powerData[i] + "</td>"
+        }
+        outputHTML1 += "</tr></table>"
+
+        document.getElementById("table1").innerHTML = outputHTML1
+
+        //DEL TVÅ AV TABELLEN
+
+        outputHTML2 += "<table><tr>"
+
+        outputHTML2 += "<th>" + "Timme (h)" + "</th>"
+        for (var i = 13; i < 24; i++) {
+            outputHTML2 += "<td>" + hourData[i] + ":00" + "</td>"
+        }
+        outputHTML2 += "<th>" + "Medel" + "</th>"
+        outputHTML2 += "</tr><tr>"
+        outputHTML2 += "<th>" + "Temperatur (°C)" + "</th>"
+        for (var i = 13; i < 24; i++) {
+            outputHTML2 += "<td>" + tempData[i] + "</td>"
+        }
+        outputHTML2 += "<th>" + avgTemp + "</th>"
+        outputHTML2 += "</tr><tr>"
+        outputHTML2 += "<th>" + "Effekt (MW)" + "</th>"
+        for (var i = 13; i < 24; i++) {
+            outputHTML2 += "<td>" + powerData[i] + "</td>"
+        }
+        outputHTML2 += "<th>" + avgPower + "</th>"
+        outputHTML2 += "</tr></table>"
+
+        document.getElementById("table2").innerHTML = outputHTML2
+    }
+
+
+    function deletePopup (id) {
+        document.getElementById(id).style.display = "none"
+    }
 
 </script>
 
@@ -402,7 +405,7 @@
     }
 
     #container3 {
-        background-color: rgb(231, 231, 231);
+        background-color: #D9F8F6;
         width: 100%;
         display: none;
         justify-content: center;
@@ -426,7 +429,7 @@
 
     .inputs {
         display: flex;
-        margin-bottom: 10px;
+        /* margin-bottom: 10px; */
     }
 
     .img_container {
