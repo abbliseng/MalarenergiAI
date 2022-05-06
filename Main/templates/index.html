@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <div class="header">
+        <img class="logo" src="static/mälarenergi.png">
         <h1>Energispåkärringen</h1>
     </div>
 
@@ -410,15 +411,19 @@
     .header {
         padding: 20px;
         text-align: center;
-        background: #1abc9c;
+        background: #091540;
         color: white;
         font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
     }
 
     .bottom {
         padding: 20px;
         text-align: center;
-        background: #1abc9c;
+        background: #091540;
         color: white;
         font-size: 20px;
     }
@@ -446,14 +451,14 @@
     }
 
     #container1 {
-        background-color: rgb(231, 231, 231);
+        background-color: #CAE6E4;
         width: 100%;
         display: flex;
         justify-content: center;
     }
 
     #container2 {
-        background-color: #ffffff;
+        background-color: #D9F8F6;
         width: 100%;
         display: none;
         justify-content: center;
@@ -551,6 +556,17 @@
     th {
         text-align: left;
         background-color: #bebcbc;
+    }
+
+    .logo {
+        display: grid;
+        float: left;
+        justify-content: center;
+        align-items: top;
+        margin-left: 35px;
+        position: absolute;
+        left: 0px;
+        height: 310px;
     }
 
     .popupContainer {
