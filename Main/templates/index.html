@@ -11,14 +11,21 @@
     <div class="popupContainer" id="test" onclick="deletePopup(id)">
         <i class="fa fa-warning"> </i>
         Warning: Write in an hour and date
+
     </div>
     <div class="popupContainer" id="negative_Warning" onclick="deletePopup(id)">
         <i class="fa fa-warning"> </i>
         Fel: Ange ett kommande datum, inte ett passerat
+        <a href="#" class="close"></a>
     </div>
     <div class="popupContainer" id="ToMuch_Warning" onclick="deletePopup(id)">
         <i class="fa fa-warning"> </i>
         Fel: Ange ett datum inom de kommande 10 dagarna
+        <a href="#" class="close"></a>
+    </div>
+    <div class="popupContainer" id="NoDate_Warning" onclick="deletePopup(id)">
+        <i class="fa fa-warning"> </i>
+        Fel: Ange ett datum
     </div>
 
     <div class="main_container">
@@ -131,11 +138,15 @@
         if (Difference_In_Days < 0) {
             var poppy = document.getElementById("negative_Warning")
             poppy.style.display = "block"
+            return 400
         }
         else if (Difference_In_Days > 10) {
             var poppy = document.getElementById("ToMuch_Warning")
             poppy.style.display = "block"
-        };
+            return 400
+        }
+        else
+            return 0
     }
 
     function predict () {
@@ -149,142 +160,157 @@
         // load.style.display = "block"
 
         //börja ladda
-        calculateDate()
-        var date = document.getElementById("date").value
-        var hour = document.getElementById("timme").value
-        var temp = document.getElementById("temperature").value
+        if (calculateDate() == 0) {
+            var date = document.getElementById("date").value
+            var hour = document.getElementById("timme").value
+            var temp = document.getElementById("temperature").value
 
-        if (!date) {
-            // If no date is entered get tomorrows date.
-            var d = new Date()
-            d.setDate(d.getDate() + 1)
-            var day = d.getDate()
-            var month = d.getMonth() + 1
-            if (day < 10) { day = 0 + day.toString() }
-            if (month < 10) { month = 0 + month.toString() }
-            date = d.getFullYear() + "-" + month + "-" + day
+            // document.getElementById("loading_container").style.display = "flex"
+            if ((!date && temp) || (!date && hour)) {
+                var poppy = document.getElementById("NoDate_Warning")
+                poppy.style.display = "block"
+            }
+            else if (!date) {
+                // If no date is entered get tomorrows date.
+                var d = new Date()
+                d.setDate(d.getDate() + 1)
+                var day = d.getDate()
+                var month = d.getMonth() + 1
+                if (day < 10) { day = 0 + day.toString() }
+                if (month < 10) { month = 0 + month.toString() }
+                date = d.getFullYear() + "-" + month + "-" + day
+            }
+            if (date && !hour && !temp) {
+                var inp = document.getElementById("inputs")
+                var load = document.getElementById("loader")
+                inp.style.display = "none"
+                load.style.display = "block"
+
+                fetch('/predict/' + date)
+                    .then(function (response) {
+                        return response.json()
+                    }).then(function (text) {
+                        var predictions = text.prediction_value
+                        var temps = text.temperatures
+                        var hours = text.hours
+                        var img_path = text.img_path
+                        predictions.forEach((p, i) => predictions[i] = p.toFixed(2))
+                        temps.forEach((t, i) => temps[i] = t.toFixed(0))
+                        hours.forEach((x, i) => hours[i] = parseInt(x, 10))
+                        document.getElementById("graph").src = img_path + '?' + new Date().getTime() // adding query to force image to reload
+                        updateTable(predictions, temps, hours)
+                        inp.style.display = "block"
+                        load.style.display = "none"
+                    })
+
+            }
+            else if (date && hour && !temp) {
+                var inp = document.getElementById("inputs")
+                var load = document.getElementById("loader")
+                inp.style.display = "none"
+                load.style.display = "block"
+
+                fetch('/predict/' + date + '/' + hour)
+                    .then(function (response) {
+                        return response.json()
+                    }).then(function (text) {
+                        if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
+                        inp.style.display = "block"
+                        load.style.display = "none"
+                    })
+            }
+            else if (date && hour && temp) {
+                // Temp has been entered
+                var inp = document.getElementById("inputs")
+                var load = document.getElementById("loader")
+                inp.style.display = "none"
+                load.style.display = "block"
+
+                fetch('/predict/' + date + '/' + hour + '/' + temp)
+                    .then(function (response) {
+                        return response.json()
+                    }).then(function (text) {
+                        document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
+                        inp.style.display = "block"
+                        load.style.display = "none"
+                    })
+            }
+            else if (!hour && temp) {
+                var poppy = document.getElementById("test")
+                poppy.style.display = "block"
+            }
         }
-        if (date && !hour && !temp) {
-            var inp = document.getElementById("inputs")
-            var load = document.getElementById("loader")
-            inp.style.display = "none"
-            load.style.display = "block"
 
-            fetch('/predict/' + date)
-                .then(function (response) {
-                    return response.json()
-                }).then(function (text) {
-                    var predictions = text.prediction_value
-                    var temps = text.temperatures
-                    var hours = text.hours
-                    var img_path = text.img_path
-                    predictions.forEach((p, i) => predictions[i] = p.toFixed(2))
-                    temps.forEach((t, i) => temps[i] = t.toFixed(0))
-                    hours.forEach((x, i) => hours[i] = parseInt(x, 10))
-                    document.getElementById("graph").src = img_path + '?' + new Date().getTime() // adding query to force image to reload
-                    updateTable(predictions, temps, hours)
-                    inp.style.display = "block"
-                    load.style.display = "none"
-                })
 
+        function updateTable (predictions, temps, hours) {
+
+            var outputHTML1 = ""
+            var outputHTML2 = ""
+            var tempData = temps
+            var powerData = predictions
+            var hourData = hours
+            var sumTemp = 0
+            var sumPower = 0
+
+            for (i = 0; i < tempData.length; i++) {
+                sumTemp += parseInt(tempData[i])
+                sumPower += parseFloat(powerData[i])
+            }
+
+            var avgTemp = (sumTemp / tempData.length).toFixed(1)
+            var avgPower = (sumPower / tempData.length).toFixed(2)
+
+            outputHTML1 += "<table><tr>"
+            outputHTML1 += "<th>" + "Timme (h)" + "</th>"
+            for (var i = 0; i < 13; i++) {
+                outputHTML1 += "<td>" + hourData[i] + ":00" + "</td>"
+            }
+            outputHTML1 += "</tr>"
+            outputHTML1 += "<tr>"
+            outputHTML1 += "<th>" + "Temperatur (°C)" + "</th>"
+            for (var i = 0; i < 13; i++) {
+                outputHTML1 += "<td>" + tempData[i] + "</td>"
+            }
+            outputHTML1 += "</tr>"
+            outputHTML1 += "<tr>"
+            outputHTML1 += "<th>" + "Effekt (MW)" + "</th>"
+            for (var i = 0; i < 13; i++) {
+                outputHTML1 += "<td>" + powerData[i] + "</td>"
+            }
+            outputHTML1 += "</tr></table>"
+
+            document.getElementById("table1").innerHTML = outputHTML1
+
+            //DEL TVÅ AV TABELLEN
+
+            outputHTML2 += "<table><tr>"
+
+            outputHTML2 += "<th>" + "Timme (h)" + "</th>"
+            for (var i = 13; i < 24; i++) {
+                outputHTML2 += "<td>" + hourData[i] + ":00" + "</td>"
+            }
+            outputHTML2 += "<th>" + "Medel" + "</th>"
+            outputHTML2 += "</tr><tr>"
+            outputHTML2 += "<th>" + "Temperatur (°C)" + "</th>"
+            for (var i = 13; i < 24; i++) {
+                outputHTML2 += "<td>" + tempData[i] + "</td>"
+            }
+            outputHTML2 += "<th>" + avgTemp + "</th>"
+            outputHTML2 += "</tr><tr>"
+            outputHTML2 += "<th>" + "Effekt (MW)" + "</th>"
+            for (var i = 13; i < 24; i++) {
+                outputHTML2 += "<td>" + powerData[i] + "</td>"
+            }
+            outputHTML2 += "<th>" + avgPower + "</th>"
+            outputHTML2 += "</tr></table>"
+
+            document.getElementById("table2").innerHTML = outputHTML2
         }
-        else if (date && hour && !temp) {
-            fetch('/predict/' + date + '/' + hour)
-                .then(function (response) {
-                    return response.json()
-                }).then(function (text) {
-                    if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
-                    inp.style.display = "block"
-                    load.style.display = "none"
-                })
+
+
+        function deletePopup (id) {
+            document.getElementById(id).style.display = "none"
         }
-        else if (date && hour && temp) {
-            // Temp has been entered
-            fetch('/predict/' + date + '/' + hour + '/' + temp)
-                .then(function (response) {
-                    return response.json()
-                }).then(function (text) {
-                    document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
-                    inp.style.display = "block"
-                    load.style.display = "none"
-                })
-        }
-        else if (!hour && temp) {
-            var poppy = document.getElementById("test")
-            poppy.style.display = "block"
-        }
-    }
-
-
-    function updateTable (predictions, temps, hours) {
-
-        var outputHTML1 = ""
-        var outputHTML2 = ""
-        var tempData = temps
-        var powerData = predictions
-        var hourData = hours
-        var sumTemp = 0
-        var sumPower = 0
-
-        for (i = 0; i < tempData.length; i++) {
-            sumTemp += parseInt(tempData[i])
-            sumPower += parseFloat(powerData[i])
-        }
-
-        var avgTemp = (sumTemp / tempData.length).toFixed(1)
-        var avgPower = (sumPower / tempData.length).toFixed(2)
-
-        outputHTML1 += "<table><tr>"
-        outputHTML1 += "<th>" + "Timme (h)" + "</th>"
-        for (var i = 0; i < 13; i++) {
-            outputHTML1 += "<td>" + hourData[i] + ":00" + "</td>"
-        }
-        outputHTML1 += "</tr>"
-        outputHTML1 += "<tr>"
-        outputHTML1 += "<th>" + "Temperatur (°C)" + "</th>"
-        for (var i = 0; i < 13; i++) {
-            outputHTML1 += "<td>" + tempData[i] + "</td>"
-        }
-        outputHTML1 += "</tr>"
-        outputHTML1 += "<tr>"
-        outputHTML1 += "<th>" + "Effekt (MW)" + "</th>"
-        for (var i = 0; i < 13; i++) {
-            outputHTML1 += "<td>" + powerData[i] + "</td>"
-        }
-        outputHTML1 += "</tr></table>"
-
-        document.getElementById("table1").innerHTML = outputHTML1
-
-        //DEL TVÅ AV TABELLEN
-
-        outputHTML2 += "<table><tr>"
-
-        outputHTML2 += "<th>" + "Timme (h)" + "</th>"
-        for (var i = 13; i < 24; i++) {
-            outputHTML2 += "<td>" + hourData[i] + ":00" + "</td>"
-        }
-        outputHTML2 += "<th>" + "Medel" + "</th>"
-        outputHTML2 += "</tr><tr>"
-        outputHTML2 += "<th>" + "Temperatur (°C)" + "</th>"
-        for (var i = 13; i < 24; i++) {
-            outputHTML2 += "<td>" + tempData[i] + "</td>"
-        }
-        outputHTML2 += "<th>" + avgTemp + "</th>"
-        outputHTML2 += "</tr><tr>"
-        outputHTML2 += "<th>" + "Effekt (MW)" + "</th>"
-        for (var i = 13; i < 24; i++) {
-            outputHTML2 += "<td>" + powerData[i] + "</td>"
-        }
-        outputHTML2 += "<th>" + avgPower + "</th>"
-        outputHTML2 += "</tr></table>"
-
-        document.getElementById("table2").innerHTML = outputHTML2
-    }
-
-
-    function deletePopup (id) {
-        document.getElementById(id).style.display = "none"
-    }
 
 </script>
 
@@ -425,7 +451,7 @@
     .loader {
         border: 16px solid #f3f3f3;
         border-radius: 50%;
-        border-top: 16px solid #3498db;
+        border-top: 16px solid #091540;
         width: 120px;
         height: 120px;
         -webkit-animation: spin 2s linear infinite;
@@ -489,5 +515,36 @@
         width: 100%;
         padding: 16px;
         display: none;
+    }
+
+    .close {
+        position: absolute;
+        right: 32px;
+        top: 32px;
+        width: 32px;
+        height: 32px;
+        opacity: 0.3;
+    }
+
+    .close:hover {
+        opacity: 1;
+    }
+
+    .close:before,
+    .close:after {
+        position: absolute;
+        left: 15px;
+        content: ' ';
+        height: 33px;
+        width: 2px;
+        background-color: #333;
+    }
+
+    .close:before {
+        transform: rotate(45deg);
+    }
+
+    .close:after {
+        transform: rotate(-45deg);
     }
 </style>
