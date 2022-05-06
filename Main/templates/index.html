@@ -12,6 +12,14 @@
         <i class="fa fa-warning"> </i>
         Warning: Write in an hour and date
     </div>
+    <div class="popupContainer" id="negative_Warning" onclick="deletePopup(id)">
+        <i class="fa fa-warning"> </i>
+        Fel: Ange ett kommande datum, inte ett passerat
+    </div>
+    <div class="popupContainer" id="ToMuch_Warning" onclick="deletePopup(id)">
+        <i class="fa fa-warning"> </i>
+        Fel: Ange ett datum inom de kommande 10 dagarna
+    </div>
 
     <div class="main_container">
 
@@ -122,12 +130,12 @@
         // document.getElementById("Difference").innerHTML = Difference_In_Days;
 
         if (Difference_In_Days < 0) {
-            var popup = "Ange ett kommande datum, inte ett passerat"
-            popup.classList.toggle("show")
+            var poppy = document.getElementById("negative_Warning")
+            poppy.style.display = "block"
         }
         else if (Difference_In_Days > 10) {
-            var popup = "Ange ett datum inmo de kommande 10 dagarna"
-            popup.classList.toggle("show")
+            var poppy = document.getElementById("ToMuch_Warning")
+            poppy.style.display = "block"
         };
     }
 
