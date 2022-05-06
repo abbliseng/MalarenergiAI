@@ -5,6 +5,10 @@
         <h1>Energispåkärringen</h1>
     </div>
 
+    <div class="popup">
+        <span class="popuptext" id="myPopup" onclick="deletePopup()">Write in an hour and date</span>
+    </div>
+
     <div class="main_container">
 
         <div class="container1">
@@ -20,7 +24,9 @@
                 <!-- <p>Inmatad temperatur: <span id="temperatureValue"></span></p> -->
             </div>
         </div>
+        
 
+        <p id="pp"></p>
         <div class="container2">
             <div class="table_container">
                 <p class="heading">Prognostierade värden för kommande 24 timmar</p>
@@ -119,6 +125,11 @@
                 document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
             });
         }
+        else if(!hour && temp)
+        {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+        }
         
     }
 
@@ -158,6 +169,11 @@
 
 
         document.getElementById("table").innerHTML = outputHTML;
+    }
+
+    function deletePopup()
+    {
+        document.getElementById("myPopup").classList.toggle("show");
     }
 
     var outputHTML = ""
@@ -331,5 +347,55 @@
     th {
         text-align: left;
         background-color: #bebcbc;
+    }
+
+    .popup {
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .popup .popuptext {
+        visibility: hidden;
+        width: 160px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -80px;
+    }
+
+    .popup .popuptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .popup .show {
+        visibility: visible;
+        -webkit-animation: fadeIn 1s;
+        animation: fadeIn 1s
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity:1 ;}
+    }
+
+    @-webkit-keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
     }
 </style>
