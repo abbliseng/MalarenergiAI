@@ -5,7 +5,7 @@
 
     <div class="header">
         <img class="logo" src="static/mälarenergi.png">
-        <h1>Energispåkärringen</h1>
+        <h1>Effektologen</h1>
     </div>
 
     <div class="popupContainer" id="test">
@@ -86,8 +86,9 @@
 
     <div class="bottom">
         <!-- <h1>Info</h1> -->
-        <p>Skriv in datum, timme och en temperatur för att få en förutspådd effekt för den timmen.
-            Om det inte skrivs in något datum så visas temperaturen för de nästa 24 timmarna i en graf.</p>
+        <p>Ange datum och timme alternativt temperatur för att få en förutspådd effekt för inmatad timme.
+            Om inget datum anges visas temperaturen kommande 24 timmar i graf och tabell. Om ingen temperatur anges
+            hämtas temperaturdata från SMHI.</p>
     </div>
 </body>
 
@@ -177,6 +178,8 @@
                 var load = document.getElementById("loader")
                 inp.style.display = "none"
                 load.style.display = "block"
+                // document.getElementById("container2").style.display = "flex"
+                // document.getElementById("container3").style.display = "flex"
 
                 fetch('/predict/' + date)
                     .then(function (response) {
@@ -193,6 +196,8 @@
                         updateTable(predictions, temps, hours)
                         inp.style.display = "block"
                         load.style.display = "none"
+                        document.getElementById("container2").style.display = "flex"
+                        document.getElementById("container3").style.display = "flex"
                     })
 
             }
@@ -201,6 +206,8 @@
                 var load = document.getElementById("loader")
                 inp.style.display = "none"
                 load.style.display = "block"
+                // document.getElementById("container2").style.display = "flex"
+                // document.getElementById("container3").style.display = "flex"
 
                 fetch('/predict/' + date + '/' + hour)
                     .then(function (response) {
@@ -209,6 +216,8 @@
                         if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
                         inp.style.display = "block"
                         load.style.display = "none"
+                        document.getElementById("container2").style.display = "flex"
+                        document.getElementById("container3").style.display = "flex"
                     })
 
             }
@@ -218,6 +227,8 @@
                 var load = document.getElementById("loader")
                 inp.style.display = "none"
                 load.style.display = "block"
+                // document.getElementById("container2").style.display = "flex"
+                // document.getElementById("container3").style.display = "flex"
 
                 fetch('/predict/' + date + '/' + hour + '/' + temp)
                     .then(function (response) {
@@ -226,6 +237,8 @@
                         document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
                         inp.style.display = "block"
                         load.style.display = "none"
+                        document.getElementById("container2").style.display = "flex"
+                        document.getElementById("container3").style.display = "flex"
                     })
 
             }
@@ -234,11 +247,6 @@
                 poppy.style.display = "block"
             }
         }
-    }
-
-    document.getElementById("container2").style.display = "flex"
-    document.getElementById("container3").style.display = "flex"
-
     }
 
     // function showInfo (_callback) {
@@ -338,7 +346,9 @@
         margin-right: 10px;
         padding: 10px;
         max-width: 130px;
-        border-color: #a7a7a7;
+        border-color: black;
+        border-width: 1px;
+        /* border-style: none; */
         border-radius: 10px;
     }
 
@@ -346,9 +356,11 @@
         margin-left: 10px;
         margin-right: 10px;
         padding: 10px;
-        border-color: #a7a7a7;
+        border-color: black;
+        /* border-style: none; */
+        border-width: 1px;
         border-radius: 10px;
-        background-color: rgb(91, 90, 90);
+        background-color: #0e226b;
         color: white;
     }
 
@@ -368,6 +380,8 @@
 
     .bottom {
         padding: 20px;
+        padding-left: 80px;
+        padding-right: 80px;
         text-align: center;
         background: #091540;
         color: white;
@@ -401,15 +415,19 @@
         width: 100%;
         display: flex;
         justify-content: center;
-        box-shadow: 3px 10px 15px rgb(186, 186, 186);
+        /* box-shadow: 3px 10px 15px rgb(186, 186, 186); */
     }
 
     #container2 {
-        background-color: #f9efec;
+        background-color: #ecf4ff;
         width: 100%;
         display: none;
         justify-content: center;
-        box-shadow: 3px 10px 20px rgb(186, 186, 186);
+        /* box-shadow: 6px 10px 15px rgb(186, 186, 186); */
+        box-shadow:
+            inset 0px 8px 6px -6px rgba(0, 0, 0, 0.1),
+            inset 0px -8px 6px -6px rgba(0, 0, 0, 0.1);
+
     }
 
     #container3 {
@@ -417,7 +435,7 @@
         width: 100%;
         display: none;
         justify-content: center;
-        box-shadow: 4px -10px 15px rgb(186, 186, 186);
+        /* box-shadow: 3px 10px 15px rgb(186, 186, 186); */
     }
 
     .input_container {
@@ -466,11 +484,13 @@
         border-top: 16px solid #091540;
         width: 120px;
         height: 120px;
+        margin: auto;
+        margin-top: 30%;
         -webkit-animation: spin 2s linear infinite;
         /* Safari */
         animation: spin 2s linear infinite;
         /* Safari */
-        left: 50%;
+        /* left: 50%; */
     }
 
     @keyframes spin {
