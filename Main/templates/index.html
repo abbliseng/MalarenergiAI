@@ -8,24 +8,26 @@
         <h1>Energispåkärringen</h1>
     </div>
 
-    <div class="popupContainer" id="test" onclick="deletePopup(id)">
+    <div class="popupContainer" id="test">
         <i class="fa fa-warning"> </i>
-        Warning: Write in an hour and date
+        Fel: Skriv in timme och datum
+        <a href="#" class="close" id="test" onclick="deletePopup(id)"></a>
 
     </div>
-    <div class="popupContainer" id="negative_Warning" onclick="deletePopup(id)">
+    <div class="popupContainer" id="negative_Warning">
         <i class="fa fa-warning"> </i>
         Fel: Ange ett kommande datum, inte ett passerat
-        <a href="#" class="close"></a>
+        <a href="#" class="close" id="negative_Warning" onclick="deletePopup(id)"></a>
     </div>
-    <div class="popupContainer" id="ToMuch_Warning" onclick="deletePopup(id)">
+    <div class="popupContainer" id="ToMuch_Warning">
         <i class="fa fa-warning"> </i>
         Fel: Ange ett datum inom de kommande 10 dagarna
-        <a href="#" class="close"></a>
+        <a href="#" class="close" id="ToMuch_Warning" onclick="deletePopup(id)"></a>
     </div>
-    <div class="popupContainer" id="NoDate_Warning" onclick="deletePopup(id)">
+    <div class="popupContainer" id="NoDate_Warning">
         <i class="fa fa-warning"> </i>
         Fel: Ange ett datum
+        <a href="#" class="close" id="NoDate_Warning" onclick="deletePopup(id)"></a>
     </div>
 
     <div class="main_container">
@@ -128,7 +130,7 @@
         //skriver ut skillnaden mellan nuvarande datum och date2
         // document.getElementById("Difference").innerHTML = Difference_In_Days;
 
-        if (Difference_In_Days < 0) {
+        if (Difference_In_Days <= 0) {
             var poppy = document.getElementById("negative_Warning")
             poppy.style.display = "block"
             return 400
@@ -232,9 +234,10 @@
                 poppy.style.display = "block"
             }
         }
+    }
 
-        document.getElementById("container2").style.display = "flex"
-        document.getElementById("container3").style.display = "flex"
+    document.getElementById("container2").style.display = "flex"
+    document.getElementById("container3").style.display = "flex"
 
     }
 
@@ -315,6 +318,7 @@
         document.getElementById(id).style.display = "none"
     }
 
+
 </script>
 
 
@@ -358,6 +362,8 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        /* box-shadow: 3px 10px 10px rgb(139, 139, 139); */
+        box-shadow: rgba(0, 0, 0, 0.1) 9px 15px 13px 3px, rgba(0, 0, 0, 0.1) 9px 15px 13px 0px;
     }
 
     .bottom {
@@ -376,7 +382,7 @@
     body {
         margin: 0px;
         margin: 0;
-        background-color: #EEE;
+        background-color: #f9efec;
         font-family: "Open Sans", sans-serif;
         box-sizing: border-box;
         cursor: default;
@@ -391,24 +397,27 @@
     }
 
     #container1 {
-        background-color: #D9F8F6;
+        background-color: #eaf0f0;
         width: 100%;
         display: flex;
         justify-content: center;
+        box-shadow: 3px 10px 15px rgb(186, 186, 186);
     }
 
     #container2 {
-        background-color: #CAE6E4;
+        background-color: #f9efec;
         width: 100%;
         display: none;
         justify-content: center;
+        box-shadow: 3px 10px 20px rgb(186, 186, 186);
     }
 
     #container3 {
-        background-color: #D9F8F6;
+        background-color: #eaf0f0;
         width: 100%;
         display: none;
         justify-content: center;
+        box-shadow: 4px -10px 15px rgb(186, 186, 186);
     }
 
     .input_container {
@@ -491,11 +500,16 @@
         font-family: arial, sans-serif;
         border-collapse: collapse;
         width: 100%;
+        background-color: white;
     }
 
     th {
         text-align: left;
-        background-color: #bebcbc;
+        background-color: #0e226b;
+        color: white;
+        border-color: black;
+        border-collapse: collapse;
+        /* bebcbc */
     }
 
     .logo {
@@ -522,10 +536,10 @@
 
     .close {
         position: absolute;
-        right: 32px;
-        top: 32px;
-        width: 32px;
-        height: 32px;
+        left: 92%;
+        top: 20%;
+        width: 10%;
+        height: 10%;
         opacity: 0.3;
     }
 
