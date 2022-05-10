@@ -29,6 +29,11 @@
         Fel: Ange ett datum
         <a href="#" class="close" id="NoDate_Warning" onclick="deletePopup(id)"></a>
     </div>
+    <div class="popupContainer" id="useNumbers_Warning">
+        <i class="fa fa-warning"> </i>
+        Fel: Ange ett riktigt timtal
+        <a href="#" class="close" id="NoDate_Warning" onclick="deletePopup(id)"></a>
+    </div>
 
     <div class="main_container">
 
@@ -37,8 +42,8 @@
                 <p class="heading">Inmatning av värden</p>
                 <div class="inputs" id="inputs">
                     <input type="date" id="date" name="date" placeholder="Datum">
-                    <input type="text" id="timme" name="timme" placeholder="Timme">
-                    <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
+                    <input type="number" id="timme" name="timme" placeholder="Timme">
+                    <input type="number" id="temperature" name="temperature" placeholder="Temperatur">
                     <button onClick="predict()">Prediktera</button>
                     <p id="pp" ></p>
 
@@ -172,6 +177,14 @@
                 if (month < 10) { month = 0 + month.toString() }
                 date = d.getFullYear() + "-" + month + "-" + day
 
+            }
+            if((hour < 0) || (hour > 23))
+            {
+                var poppy = document.getElementById("useNumbers_Warning")
+                poppy.style.display = "block"
+                hour = null;
+                temp = null;
+                date = null;
             }
             if (date && !hour && !temp) {
                 var inp = document.getElementById("inputs")
