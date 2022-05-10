@@ -7,7 +7,7 @@ Litet AI projekt där man ska förutspå värden på saker :)
 ## Innehåll
 Projektet innefattar flertalet python-program som sorterar och omformaterar datan som användes i träningen av modellerna. De olika versionerna av datan ligger även sparade i en separat mapp. Python-program som hämtar data från SMHIs API finns också, samt en HTML-fil där alla nödvändiga program kombinerats.  
 ## Hur du kommer igång
-Jag vet inte lol  
+I main-mappen finns en fil vid namn start.sh. Genom att köra den filen startas både hemsidan och tillhörande server. Vid första uppstart kan servern dröja. Problemet löses av att användaren väntar. 
 ## Planen & Processen
 En AI-modell i Python som kan förutspå förbrukningen i MWh i ett husområde utifrån temperatur och årstid. En inblick i arbetets gång finns även lagrad i form av textfiler i mappen "meeting_notes"
 ### Delmål
