@@ -36,6 +36,7 @@ def testfn(date, hour):
         return jsonify(message)
 
 # Get effect from date, hour and temp. wind should be 0?
+
 @app.route('/predict/<date>/<hour>/<temp>', methods=['GET'])
 def testfn2(date, hour, temp):
     # GET request
