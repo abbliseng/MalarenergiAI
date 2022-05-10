@@ -40,13 +40,13 @@
                     <input type="text" id="timme" name="timme" placeholder="Timme">
                     <input type="text" id="temperature" name="temperature" placeholder="Temperatur">
                     <button onClick="predict()">Prediktera</button>
+                    <p id="pp" ></p>
+
                 </div>
                 <div id="loader" class="loader" style="display: none;"></div>
                 <!-- <p>Inmatad temperatur: <span id="temperatureValue"></span></p> -->
             </div>
         </div>
-
-        <!-- <p id="pp"></p>  -->
 
         <div id="container2">
             <div class="table_container">
@@ -216,8 +216,8 @@
                         if (text.status == 200 ? document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh' : document.getElementById("pp").innerHTML = "ERROR");
                         inp.style.display = "block"
                         load.style.display = "none"
-                        document.getElementById("container2").style.display = "flex"
-                        document.getElementById("container3").style.display = "flex"
+                        // document.getElementById("container2").style.display = "flex"
+                        // document.getElementById("container3").style.display = "flex"
                     })
 
             }
@@ -237,8 +237,8 @@
                         document.getElementById("pp").innerHTML = parseFloat(text.prediction_value).toFixed(2) + ' MWh'
                         inp.style.display = "block"
                         load.style.display = "none"
-                        document.getElementById("container2").style.display = "flex"
-                        document.getElementById("container3").style.display = "flex"
+                        // document.getElementById("container2").style.display = "flex"
+                        // document.getElementById("container3").style.display = "flex"
                     })
 
             }
