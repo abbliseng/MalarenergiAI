@@ -86,9 +86,9 @@
 
     <div class="bottom">
         <!-- <h1>Info</h1> -->
-        <p>Ange datum och timme alternativt temperatur för att få en förutspådd effekt för inmatad timme.
-            Om inget datum anges visas temperaturen kommande 24 timmar i graf och tabell. Om ingen temperatur anges
-            hämtas temperaturdata från SMHI.</p>
+        <p>Ange datum, timme och/eller temperatur för att få en förutspådd effekt för inmatade värden.
+            Om inget datum anges visas temperaturen för det kommande dygnet i en graf och en tabell längre ned på sidan. Om ingen temperatur anges
+            används SMHIs temperaturprognos vilket hämtas från SMHIs API. Var medveten om att första gången programmet körs tar det en tid innan en prognos visas.</p>
     </div>
 </body>
 
@@ -332,6 +332,11 @@
 
 
 <style>
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
     h1 {
         margin: 15px;
         text-align: center;
